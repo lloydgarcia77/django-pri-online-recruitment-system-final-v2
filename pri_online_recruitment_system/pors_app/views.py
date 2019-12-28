@@ -1664,12 +1664,10 @@ def pri_admin_job_details(request, key):
     template_name = "pri_admin/pri_admin_jobs/pri_admin_job_details.html"
 
     job_vacancies = get_object_or_404(PRIJobVacancyInfo, id=decrypt_key(key))  
+    qualifications = PRIJobVacancyJobQualificationsInfo.objects.all().filter(job_vacancy_jq=job_vacancies)
+    responsibilities = PRIJobVacancyJobResponsibilitiesInfo.objects.all().filter(job_vacancy_jr=job_vacancies)
 
-    user = User.objects.all().filter(username=request.user)
-
-    print(job_vacancies)
-
-    print('----------->', request.user)
+    user = User.objects.all().filter(username=request.user) 
 
     try:
         profile = PRIUserInfo.objects.all().get(Q(user__in=user) & Q(Q(level='Administrator') | Q(level='Sub Admin') | Q(level='Employee')))
@@ -1679,6 +1677,14 @@ def pri_admin_job_details(request, key):
     applicant_list = PRIApplicantProfileInfo.objects.all().distinct() 
     
     job_vacancy_matching = [job_vacancies.job_title, job_vacancies.job_category,job_vacancies.job_specialization,job_vacancies.job_minimum_experience,str(job_vacancies.job_salary) ]
+    
+    for q in qualifications:
+        job_vacancy_matching.append(q.job_qualifications)
+    
+    for r in responsibilities:
+        job_vacancy_matching.append(r.job_responsibilities)
+
+    print(job_vacancy_matching)
     
     applicant_category_matching = []
 
@@ -1712,7 +1718,6 @@ def pri_admin_job_details(request, key):
         
         # For Education
         educ_counter = 0 
-        print('-------------->', applicant_education)
         for item in job_vacancy_matching:
             match = any([m for m in applicant_education if item in m])
             if match:
@@ -5075,80 +5080,3 @@ def export_report_xlsx_clients(request):
     return response
 
 def export_report_xlsx_current_users(request):
-
-    response = HttpResponse(
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    )
-
-    response['Content-Disposition'] = 'attachment; filename=current-users-{date}.xlsx'.format(date=datetime.now().strftime('%Y-%m-%d'),)
-
-    workbook = Workbook()
-
-    ws = workbook.active
-    
-    ws = workbook.create_sheet("Current Users")
-
-    ws.title = "Current Users"
-
-    ws.sheet_properties.tabColor = "1072BA"
-
-    thin = Side(border_style="thin", color="007BFF")
-    thick = Side(border_style="thick", color="1E1E1E")
-    double = Side(border_style="double", color="ff0000") 
-
-    # Adjust the size
-    ws.row_dimensions[1].height = 30  
-    
-    columns = ["ID", "Name", "Email", "Contact", "Position", "Department", "Level"]
-    alphabetic_chars = string.ascii_uppercase 
-        
-    # Title
-    merge_cell = 'A1:{}1'.format(alphabetic_chars[len(columns)-1]) 
-
-    ws.merge_cells(merge_cell) 
-    title_cell = ws['A1'] 
-    title_cell.value = "User Reports" 
-
-    title_cell.border = Border(top=thick, left=thick, right=thick, bottom=thick)
-    title_cell.fill = PatternFill("solid", fgColor="1E1E1E") 
-    title_cell.font = Font(color=colors.WHITE, bold=True, size=20)
-    title_cell.alignment = Alignment(horizontal="center", vertical="center") 
-
-     # must always start at 1
-    for col in range(len(columns)):         
-        ws.cell(row=2, column=col+1, value=columns[col])
-        ws.row_dimensions[2].height = 30 
-        ws.column_dimensions[alphabetic_chars[col]].width = 40
-
-    header_columns = [ws.cell(row=2,column=x) for x in range(1,(len(columns)+1))]
-    ft = Font(color=colors.BLACK, bold=True, size=12)
- 
-    for element in header_columns:
-        element.font = ft  # the change only affects A1
-        element.border = Border(top=thick, left=thick, right=thick, bottom=thick)
-        element.fill = PatternFill("solid", fgColor="FFE300")
-        element.alignment = Alignment(horizontal="center", vertical="center")
-
-    # Database Query
-    thin_border = Border(left=Side(style='thin'), 
-                     right=Side(style='thin'), 
-                     top=Side(style='thin'), 
-                     bottom=Side(style='thin'))
-
-    users_info = PRIUserInfo.objects.all().order_by('-id')
-
-    index = 2
-    for users in users_info:        
-        index += 1    
-        ws.cell(row=index, column=1, value=users.id).border = thin_border
-        ws.cell(row=index, column=2, value=str(users.last_name + ", " + users.first_name + " " + users.middle_name)).border = thin_border
-        ws.cell(row=index, column=3, value=users.user.email).border = thin_border
-        ws.cell(row=index, column=4, value=users.contact).border = thin_border
-        ws.cell(row=index, column=5, value=users.position).border = thin_border
-        ws.cell(row=index, column=6, value=users.department).border = thin_border
-        ws.cell(row=index, column=7, value=users.level).border = thin_border
-    
-
-    workbook.save(response)
-
-    return response
