@@ -1,0 +1,158 @@
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.maxText {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#record-limit{
+  max-width: 100%;
+}
+
+#subject_table
+{
+    table-layout: fixed;
+    width: 100px;
+}
+
+.custom-color-header{
+    background-color: #2C6D04;
+}
+
+.custom-color{
+    background-color: #9BBB59;
+}
+/* for muted hints */
+.text-muted {
+    color: #FFFFFF !important;
+}
+
+
+/* for hints of the forms*/
+.custom-text-color, #hint_id_new_password1 ul, #hint_id_password1 ul{
+    color: #FFFFFF;
+}
+ 
+
+.custom-text-color2{
+    color: #2C6D04;
+}
+
+.custom-form-color{
+    background-color: #2C6D04;
+}
+
+
+.custom-bg-orange{
+    background-color: #FF7800;
+}
+
+.custom-bg-violet{
+    background-color: #4F1EB3;
+}
+
+.custom-bg-brown{
+    background-color: #8F4017;
+}
+
+
+
+
+/*registration form*/
+.registration-form-background{
+    background: rgba(0, 0, 0, 0.5)
+}
+
+.registration-body{
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    font-family: sans-serif;
+}
+/* field forms for account registration created by django*/
+  
+#inputUsername, #inputPassword, #id_email, #id_new_password1, #id_new_password2, #id_old_password,#id_username, #id_password1, #id_password2 {
+    background: transparent;
+    color: #fff;
+}
+
+/* Toggle switch */
+
+.switch{
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s; 
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+
+}
+
+input:checked + .slider{
+    background-color: #2196F3;
+}
+
+input:focus + .slider{
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before{
+    -webkit-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    transform: translateX(16px);
+}
+
+/* Round Slider */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

@@ -1,0 +1,68 @@
+{% extends 'pri_client_side/client_base.html' %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="col-md-12">
+
+    <h1 class="my-4">Job
+        <small>Applicant Hired</small>
+    </h1>
+</div>
+<div class="divider">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center" id="client-table-hired" width="100%" cellspacing="0"
+            style="font-family: candara; font-size: 15px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 10%;">Picture</th>
+                    <th style="width: 15%;">Position</th>
+                    <th style="width: 15%;">Name</th>
+                    <th style="width: 5%;">Attachments</th>
+                    <th style="width: 10%;">Mobile#</th>
+                    <th style="width: 10%;">Email</th>
+                    <th style="width: 15%;">Date Hired</th>
+                    <th style="width: 10%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for applicant in hired_applicants %}
+                    <tr>
+                        <td>{{ applicant.applicant_id }}</td>
+                        <td align="center">
+                            <img class="img-profile rounded-circle" src="
+                            {% if applicant.hired_applicant.image %}
+                            {{ applicant.hired_applicant.image.url }}
+                            {% else %}
+                            {% static 'images\Administrator Male_48px.png' %}
+                            {% endif %}" width="50" height="50">
+                        </td>    
+                        <td>{{ applicant.hired_applicant.position_desired }}</td>
+                        <td>{{applicant.hired_applicant.lname}}, {{ applicant.hired_applicant.fname}} {{ applicant.hired_applicant.lname }}</td>
+                        <td>
+                            {% if applicant.hired_applicant.cv %}
+                            <!-- https://fontawesome.com/how-to-use/on-the-web/styling/sizing-icons -->
+                            <a href="{{applicant.hired_applicant.cv.url}}" download>
+                                <span title="Download Curriculum Vitae" class="fas fa-file-download fa-2x"></span>
+                            </a>
+                            {% endif %}
+                        </td>
+                        <td>{{ applicant.hired_applicant.mobile_no }}</td>
+                        <td>{{ applicant.hired_applicant.user.email }}</td> 
+                        <td>{{ applicant.date_hired }}</td> 
+                        <td>
+                            <button type="button" data-url="{% url 'client_side_fire_hired_applicants' applicant.id %}"
+                                class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm fire-applicant"
+                                data-toggle="tooltip" data-placement="top" title="Fire Applicant">
+                                <span class="fas fa-trash-alt"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- /.row -->
+{% endblock body %}

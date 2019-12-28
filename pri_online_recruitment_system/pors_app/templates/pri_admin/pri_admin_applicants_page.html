@@ -1,0 +1,55 @@
+{% extends 'pri_admin/pri_admin_index.html' %}
+{% load staticfiles %}
+{% block inner_body %}
+<!-- Breadcrumbs-->
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active">Applicants Page</li>
+</ol>
+
+
+<!-- DataTables Example -->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Registered Applicants</div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center" id="applicantDataTable" width="100%" cellspacing="0" style="font-family: candara; font-size: 15px">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Picture</th>
+                        <th style="width: 20%;">Username</th>
+                        <th style="width: 25%;">Name</th>
+                        <th style="width: 5%;">Resume/C.V.</th>
+                        <th style="width: 15%;">Mobile No</th>
+                        <th style="width: 20%;">Email</th>
+                        <th style="width: 15%;">Actions</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Picture</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Resume/C.V.</th>
+                        <th>Mobile No</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                   {% include 'pri_admin/tables/pri_admin_applicants_table.html' %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+<p class="small text-center text-muted my-5">
+    <em>To God be the Glory</em>
+</p>
+
+{% endblock inner_body %}

@@ -1,0 +1,16 @@
+{% extends 'registration/registration_base.html' %}
+{% block body_block %}
+<div class="container">
+    <div class="card card-login mx-auto mt-5 registration-form-background">
+      <div class="card-header text-white">Logged-out!</div>
+      <div class="card-body">
+         <h3 class="text-center text-white">
+             You've been logged out!
+         </h3>
+        <div class="text-center">
+          <a class="d-block small mt-3 text-white" href="{% url 'user_login' %}">Return to Login-Page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock body_block %}

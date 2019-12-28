@@ -1,0 +1,50 @@
+{% load crispy_forms_tags %}
+<form class="pri-admin-edit-clients" method="POST" enctype="multipart/form-data" data-url="{% url 'pri:edit_clients' form.instance.id %}">
+
+      {% if form.errors.file %}
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+              {{ form.errors.file|striptags }}
+        </div>
+        {% endif %}
+
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit client</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        {{ form|crispy }}
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+
+</form>
+
+
+<script>
+$('input[type="file"]').change(function(e){
+    var fileName = e.target.files[0].name;
+    //alert('The file "' + fileName +  '" has been selected.');
+    var fileExtension = fileName.split('.').pop();
+    if(fileName.length > 30){
+        $(".custom-file-label").text(fileName.substring(0,30) + '...' + fileExtension);
+    }else{
+        $(".custom-file-label").text(fileName);
+    }
+
+});
+//$('#id_client_company_logo').on('click', function(){
+//    alert('hello');
+//    $(".custom-file-label").text('hello');
+//});
+
+
+</script>

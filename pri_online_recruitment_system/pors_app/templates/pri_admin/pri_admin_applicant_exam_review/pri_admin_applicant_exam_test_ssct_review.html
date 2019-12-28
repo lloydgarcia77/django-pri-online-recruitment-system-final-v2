@@ -1,0 +1,46 @@
+{% extends 'pri_admin/pri_admin_applicant_exams/pri_admin_applicant_exam_base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+Sach's Sentence Completion Test
+{% endblock title %} 
+{% block body %}
+<!-- Main Content -->
+<h1>Sach's Sentence Completion Test</h1>
+<div class="container">
+    <form id="examForm" method="POST">
+        {% csrf_token %}   
+        <div class="form-group" id="scctForm">
+                {{ scctForm|crispy }}
+        </div>
+        <hr>
+        <div class="form-group">
+        <label for="score">Score</label>
+        <input type="number" min="1" max="60" class="form-control" id="score" placeholder="Score" name="score" required>
+        </div>
+        <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="enable-retake" name="enable-retake">
+        <label class="form-check-label" for="enable-retake">Enable Retake</label>
+        </div>
+        
+        <button type="submit" id="submit">Save Score</button>
+    </form>
+</div>
+
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin.min.js' %}"></script>
+<script>
+    $(document).ready(function(){ 
+        $("#scctForm :input").prop("disabled", true);
+    });
+</script>
+
+{% endblock body %}

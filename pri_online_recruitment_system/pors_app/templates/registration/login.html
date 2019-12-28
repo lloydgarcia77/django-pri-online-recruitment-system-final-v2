@@ -1,0 +1,37 @@
+{% extends 'registration/registration_base.html' %}
+{% block title %}
+Login Form
+{% endblock title %}
+
+{% block body_block %}
+
+  <div class="container login-box">
+    <div class="card card-login mx-auto mt-5 registration-form-background">
+      <div class="card-header text-white">PRI Admin Login Form </div>
+      <div class="card-body">
+        <form method="POST">
+            {% include 'partials/_messages.html' %}
+            {% csrf_token %}
+          <div class="form-group">
+            <div class="form-label-group">
+              <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required="required" autofocus="autofocus">
+              <label class="text-white" for="inputUsername">Username</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="required">
+              <label class="text-white" for="inputPassword">Password</label>
+            </div>
+          </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <a class="btn btn-success btn-block" href="{% url 'applicant_side_account_registration' %}">Applicant Registration</a>
+        </form>
+        <div class="text-center">
+          <a class="d-block small mt-3 text-white" href="{% url 'password_reset' %}">Forgot Password?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock body_block %}

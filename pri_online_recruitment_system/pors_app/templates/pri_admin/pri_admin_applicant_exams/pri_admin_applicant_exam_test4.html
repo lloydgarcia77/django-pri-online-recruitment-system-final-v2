@@ -1,0 +1,464 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Test 4: Abstract Reasoning</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+    <link href="{% static 'css/applicant_exam_test4.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress">
+        <div id="examProgressbar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+            aria-valuemin="0" aria-valuemax="100" style="width:0%">
+            0% Complete (success)
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <h1>Test 4: Abstract Reasoning (1 points each)</h1>
+    <div class="container">
+        <div class="quiz-container">
+            <div id="quiz"></div>
+        </div>
+    </div>
+    <div class="container">
+        <button style="display: none;" id="previous">Previous Question</button>
+        <button id="next">Next Question</button>
+        <button style="display: none;" id="submit"
+            data-url="{% url 'pri:applicant_exam_test4' profile.secure_key_id job_vacancy.id %}">Submit Exam</button>
+    </div>
+    <!-- Display Results -->
+    <div style="display: none;" id="results"></div>
+    <!-- Hidden Loading Overlay Page -->
+    <div id="progressOverlay" class="overlay" style="display: none;">
+        <div class="overlay__inner">
+            <div class="overlay__content"><span class="spinner"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            const quizContainer = document.getElementById("quiz");
+            const resultsContainer = document.getElementById("results");
+            const submitButton = document.getElementById("submit");
+            const progressOverlayContainer = document.getElementById("progressOverlay");
+            const examProgressbarContainer = document.getElementById("examProgressbar");
+
+            let currentSlide = 0;
+
+
+            const myQuestions = [
+                {
+                    question: "{% static 'images/t4ar_q1.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q1_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q1_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q1_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q1_d.JPG' %}"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "{% static 'images/t4ar_q2.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q2_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q2_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q2_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q2_d.JPG' %}"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "{% static 'images/t4ar_q3.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q3_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q3_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q3_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q3_d.JPG' %}"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "{% static 'images/t4ar_q4.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q4_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q4_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q4_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q4_d.JPG' %}"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "{% static 'images/t4ar_q5.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q5_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q5_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q5_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q5_d.JPG' %}"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "{% static 'images/t4ar_q6.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q6_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q6_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q6_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q6_d.JPG' %}"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "{% static 'images/t4ar_q7.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q7_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q7_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q7_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q7_d.JPG' %}"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "{% static 'images/t4ar_q8.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q8_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q8_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q8_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q8_d.JPG' %}"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "{% static 'images/t4ar_q9.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q9_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q9_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q9_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q9_d.JPG' %}"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "{% static 'images/t4ar_q10.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q10_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q10_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q10_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q10_d.JPG' %}"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "{% static 'images/t4ar_q11.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q11_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q11_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q11_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q11_d.JPG' %}"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "{% static 'images/t4ar_q12.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q12_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q12_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q12_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q12_d.JPG' %}"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "{% static 'images/t4ar_q13.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q13_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q13_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q13_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q13_d.JPG' %}"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "{% static 'images/t4ar_q14.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q14_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q14_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q14_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q14_d.JPG' %}"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "{% static 'images/t4ar_q15.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q15_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q15_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q15_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q15_d.JPG' %}"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "{% static 'images/t4ar_q16.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q16_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q16_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q16_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q16_d.JPG' %}"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "{% static 'images/t4ar_q17.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q17_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q17_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q17_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q17_d.JPG' %}"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "{% static 'images/t4ar_q18.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q18_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q18_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q18_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q18_d.JPG' %}"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "{% static 'images/t4ar_q19.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q19_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q19_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q19_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q19_d.JPG' %}"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "{% static 'images/t4ar_q20.JPG' %}",
+                    answers: {
+                        a: "{% static 'images/t4ar_q20_a.JPG' %}",
+                        b: "{% static 'images/t4ar_q20_b.JPG' %}",
+                        c: "{% static 'images/t4ar_q20_c.JPG' %}",
+                        d: "{% static 'images/t4ar_q20_d.JPG' %}"
+                    },
+                    correctAnswer: "b"
+                }                                
+            ];
+
+
+
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            function buildQuiz() {
+                // we'll need a place to store the HTML output
+                const output = [];
+
+                // for each question
+
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+                    // we'll want to store the list of answer choices
+                    const answers = [];
+
+                    // and for each available answer...
+
+                    for (letter in currentQuestion.answers) {
+                        answers.push(
+                            `<label>
+                                <input type="radio" name="question${questionNumber}" value="${letter}">
+                                ${letter} :
+                                <img src="${currentQuestion.answers[letter]}" alt="" height="55" width="55">                                
+                            </label>`
+                        );
+                    }
+                    // add this question and its answers to the output
+
+                    output.push(
+                        `<div class="slide">
+                            <div class="question"> <img src="${currentQuestion.question}" alt="asd" height="100" width="300"> </div>
+                            <div class="answers"> ${answers.join("")} </div>
+                        </div>`
+                    );
+
+                    // finally combine our output list into one string of HTML and put it on the page
+                    quizContainer.innerHTML = output.join("");
+
+                });
+            }
+
+
+
+            function showResults() {
+                // gather answer containers from our quiz
+                const answerContainers = quizContainer.querySelectorAll(".answers");
+
+                // keep track of user's answers
+
+                let numCorrect = 0;
+
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+                    // find selected answer
+                    const answerContainer = answerContainers[questionNumber];
+                    const selector = `input[name=question${questionNumber}]:checked`
+                    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                    // if answer is correct  
+
+                    if (userAnswer === currentQuestion.correctAnswer) {
+                        // add to the number of correct answers
+                        numCorrect++;
+
+                        // color the answers green
+                        answerContainers[questionNumber].style.color = "lightgreen";
+                    } else {
+                        // if answer is wrong or blank
+                        // color the answers red
+                        answerContainers[questionNumber].style.color = "red";
+                    }
+                    resultsContainer.style.display = 'block'
+                    resultsContainer.innerHTML = `Score: ${numCorrect} out of ${myQuestions.length}`;
+
+
+                });
+                // Submit score to back end
+                let data = {
+                    'score': numCorrect,
+                    'over': myQuestions.length
+                }
+                // convert to json
+
+                data = JSON.stringify(data);
+                // create request to be sent to django backend
+                // https://docs.djangoproject.com/en/2.2/ref/csrf/
+                const urlAttr = $(this).attr("data-url");
+                // show loading before rendering the 5 sec loading
+                // $('.news').css('display','none');
+                // $('.news').hide();
+                // $('.news').show();
+                // $('.news').css('display','block');
+                progressOverlayContainer.style.display = 'block';
+                setTimeout(() => {
+                    $.ajax({
+                        headers: { "X-CSRFToken": getCookie("csrftoken") },
+                        type: 'POST',
+                        url: urlAttr,
+                        data: data,
+                        dataType: 'json',
+                        success: (data) => {
+                            // // https://stackoverflow.com/questions/1865837/whats-the-difference-between-window-location-and-window-location-replace
+                            // window.location adds an item to your history in that you can (or should be able to) click "Back" and go back to the current page.
+                            // window.location.replace replaces the current history item so you can't go back to it
+                            window.location.replace(data.urlAttr);
+                            // window.location = data.urlAttr;
+                        }
+                    });
+                }, 5000);
+
+            }
+
+
+
+            // display quiz right away
+
+            buildQuiz();
+
+            // pagination
+            const previousButton = document.getElementById("previous");
+            const nextButton = document.getElementById("next");
+            const slides = document.querySelectorAll(".slide");
+
+            // slide function
+
+            function showSlide(n) {
+                slides[currentSlide].classList.remove('active-slide');
+                slides[n].classList.add('active-slide');
+                currentSlide = n;
+
+                if (currentSlide === 0) {
+                    previousButton.style.display = 'none';
+                } else {
+                    previousButton.style.display = 'inline-block';
+                }
+
+                if (currentSlide === slides.length - 1) {
+                    nextButton.style.display = 'none';
+                    submitButton.style.display = 'inline-block';
+                } else {
+                    nextButton.style.display = 'inline-block';
+                    submitButton.style.display = 'none';
+                }
+                // update the progress of the exam
+
+                examProgressbarContainer.style.width = `${((currentSlide + 1) / myQuestions.length) * 100}%`
+                examProgressbarContainer.innerHTML = `${currentSlide + 1} out of ${myQuestions.length} Complete (success)`
+            }
+            showSlide(0);
+            function showNextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            function showPreviousSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+
+            // toggle buttons
+
+            previousButton.addEventListener("click", showPreviousSlide);
+            nextButton.addEventListener("click", showNextSlide);
+
+            // on submit, show results
+
+            submitButton.addEventListener("click", showResults);
+
+
+        });
+    </script>
+</body>
+
+</html>

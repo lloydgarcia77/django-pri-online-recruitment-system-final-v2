@@ -1,0 +1,53 @@
+{% load staticfiles %}
+{% for job in job_requests %}
+<tr>
+    <td align="center">
+            <img class="img-profile rounded-circle" src="
+            {% if job.applying_applicant.image %}
+            {{ job.applying_applicant.image.url }}
+            {% else %}
+            {% static 'images\Administrator Male_48px.png' %}
+            {% endif %}" width="50" height="50">
+    </td>
+    <td><a href="{% url 'pri:applicant_profile_viewer' job_vacancies.id job.applying_applicant.secure_key_id %}" data-toggle="tooltip" title="View Applicant Profile">{{job.applying_applicant.lname}}, {{ job.applying_applicant.fname}} {{ job.applying_applicant.lname }}</a></td>
+    <td>
+        {% if job.applying_applicant.cv %}
+         <!-- https://fontawesome.com/how-to-use/on-the-web/styling/sizing-icons -->
+         <a href="{{job.applying_applicant.cv.url}}" download>
+                <span title="Download Curriculum Vitae" class="fas fa-file-download fa-2x"></span>
+         </a>
+        {% endif %}
+    </td>
+    <td>{{ job.applying_applicant.mobile_no }}</td>
+    <td>{{ job.applying_applicant.user.email }}</td>
+    <td> <span class="badge badge-danger">On going </span></td>
+    <td>{{ job.date_applied }}</td>
+    <td><span class="badge badge-info">{{job.take_exam}} </span>
+        <!-- Rounded switch -->
+        <label class="switch">
+            <input type="checkbox" data-url="{% url 'pri:applicant_request_jobs_toggle_exams' job_vacancies.secure_id job.id %}" 
+            {% if job.take_exam %}            
+            checked
+            {% endif %}>
+            <span class="slider round"></span>
+        </label>
+    </td>
+    <td> 
+            <input data-url="{% url 'pri:applicant_request_jobs_set_interview_sched' job_vacancies.secure_id job.id %}" type="text" class="form-control set-schedule-interview" readonly 
+            {% if job.interview_date %}
+            value="{{ job.interview_date}}"
+            {% else %}
+            value=""
+            {% endif %}            
+            >
+
+        <!-- <button type="button" data-url=""
+            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm set-interview-schedule"
+            data-toggle="tooltip" data-placement="top" title="Set Schedule">
+            <span class="fa fa-calendar"></span>
+        </button> --> 
+    </td>
+</tr> 
+{% endfor %}
+
+ 

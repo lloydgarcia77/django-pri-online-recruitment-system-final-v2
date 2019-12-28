@@ -1,0 +1,49 @@
+{% load staticfiles %}
+<!--https://docs.djangoproject.com/en/dev/ref/contrib/humanize/#ref-contrib-humanize-->
+{% load humanize %}
+{% for record in query %}
+<tr>
+    <td class="text-center">{{ record.id }}</td>
+    <td class="text-center"><a href="{% url 'pri:show_job_details' record.secure_id %}" data-toggle="tooltip" data-placement="top" title="More Details.">{{ record.client_request.requested_client.client_company_name }}</a></td>
+    <td class="text-center">{{ record.job_title }}</td>
+    <td class="text-center">{{ record.job_category }}</td>
+    <td class="text-center">{{ record.job_specialization }}</td>
+    <!--https://docs.djangoproject.com/en/dev/ref/contrib/humanize/#ref-contrib-humanize-->
+    <td class="text-center">{{ record.job_minimum_experience }}</td>
+    <td class="text-center">&#8369; {{ record.job_salary|intcomma }}</td>
+    <td class="text-center"><span class="badge badge-danger">{{ record.job_deadline }}</span></td>
+
+    <td align="center">
+
+        <div class="d-md-flex align-items-center justify-content-between mb-4">
+
+            {% if policy.pri_can_edit_job_vacancy %}
+            <button type="button" data-url="{% url 'pri:edit_jobs' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm show-form-edit-jobs" data-toggle="tooltip" data-placement="top" title="Edit">
+                <span class="fas fa-pencil-alt fa-sm text-black-50"></span>
+            </button>
+            {% endif %}
+
+            {% if policy.pri_can_delete_job_vacancy %}
+            <button type="button" data-url="{% url 'pri:delete_jobs' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm show-form-delete-jobs" data-toggle="tooltip" data-placement="top" title="Delete">
+                <span class="fas fa-trash-alt fa-sm text-white-50"></span>
+            </button>
+            {% endif %}
+
+            {% if policy.pri_can_view_job_vacancy_applicants %}
+            <button type="button" data-url="{% url 'pri:applicant_request_jobs' record.secure_id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm show-applicant-requests" data-toggle="tooltip" data-placement="top" title="Applicants">
+                <span class="fas fa-users text-white-50"></span> 
+            </button>
+            {% endif %}           
+      
+        </div>
+
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="9" class="text-center bg-warning">No Records!</td>
+</tr>
+{% endfor %}

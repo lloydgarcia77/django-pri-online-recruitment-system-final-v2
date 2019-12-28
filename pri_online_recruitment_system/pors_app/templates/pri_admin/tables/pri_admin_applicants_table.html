@@ -1,0 +1,35 @@
+{% load staticfiles %}
+{% for applicant in applicants %}
+<tr>
+    <td align="center">
+        <img class="img-profile rounded-circle" src="
+        {% if applicant.image %}
+        {{ applicant.image.url }}
+        {% else %}
+        {% static 'images\Administrator Male_48px.png' %}
+        {% endif %}" width="50" height="50">
+    </td>
+    <td>{{applicant.user.username }}</td>
+    <td>{{applicant.lname}}, {{ applicant.fname}} {{ applicant.lname }}</td>
+    <td>
+        {% if applicant.cv %}
+        <!-- https://fontawesome.com/how-to-use/on-the-web/styling/sizing-icons -->
+        <a href="{{applicant.cv.url}}" download>
+            <span title="Download Curriculum Vitae" class="fas fa-file-download fa-2x"></span>
+        </a>
+        {% endif %}
+    </td>
+    <td>{{ applicant.mobile_no }}</td>
+    <td>{{ applicant.user.email }}</td>
+    <td>
+        {% if policy.pri_can_delete_applicants %}
+        <button type="button" data-url="{% url 'pri:applicant_delete_record' applicant.secure_key_id %}"
+            class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm show-delete-applicant-data"
+            data-toggle="tooltip" data-placement="top" title="Delete Applicant">
+            <span class="fas fa-trash-alt"></span>
+        </button>
+        {% endif %}
+    </td>
+</tr>
+
+{% endfor %}

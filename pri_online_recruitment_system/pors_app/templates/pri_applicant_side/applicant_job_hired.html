@@ -1,0 +1,51 @@
+{% load crispy_forms_tags %}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Applicant Hired Status</h5>
+    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <h5 class="text-center">Job hired status</h5>
+    <table class="table table-striped" id="tblGrid">
+        <thead id="tblHead">
+            <tr>
+                <th style="width: 20%;" class="text-center">Applicant ID</th>
+                <th style="width: 25%;" class="text-center">Company Assigned</th>
+                <th style="width: 20%;" class="text-center">Postion</th> 
+                <th style="width: 10%;" class="text-center">Status</th> 
+                <th style="width: 25%;" class="text-center">Date Hired</th> 
+            </tr>
+        </thead>
+        <tbody>
+                {% for hired in company %}
+                <tr>
+                    <td class="text-center">{{ hired.applicant_id }}</td>
+                    <td class="text-center">{{ hired.hired_applicant.company_assigned }}</td>
+                    <td class="text-center">{{ hired.hired_applicant.position_desired }}</td>
+                    <td class="text-center">
+                        {% if hired.status == "Available" %}
+                        <span class="badge badge-success">{{ hired.status }}</span>
+                        {% elif hired.status == "Terminated" %}
+                        <span class="badge badge-danger">{{ hired.status }}</span>
+                        {% elif hired.status == "6 Months Contract" %}
+                        <span class="badge badge-warning">{{ hired.status }}</span>
+                        {% endif %}
+                        
+                    </td>
+                    <td class="text-center">{{ hired.date_hired }}</td>  
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center bg-warning">No Records!</td>
+                </tr>
+                {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

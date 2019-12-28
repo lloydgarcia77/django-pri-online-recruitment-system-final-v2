@@ -1,0 +1,117 @@
+{% load staticfiles %}
+{% load humanize%}
+<!-- https://simpleisbetterthancomplex.com/tips/2016/05/09/django-tip-2-humanize.html -->
+{% for job in job_vacancies %}
+<!-- Blog Post -->
+<div class="card mb-4">
+  <img class="card-img-top" src="
+  {% if job.client_request.requested_client.client_company_logo %}
+  {{ job.client_request.requested_client.client_company_logo.url }}
+  {% else %}
+  {% static 'images\750x300.png' %}
+  {% endif %}
+  " alt="Card image cap" width="750" height="300">
+  <div class="card-body">
+    <h2 class="card-title">{{ job.job_title }}</h2>
+     <ul class="list-unstyled" style="padding-left: 10px">
+        <li><span class="text-secondary"><i class="fas fa-search-location"></i></span> <span style="color: #acacac; font-size: 10pt; text-align: left;">Location:</span> <span style="font-size: 10pt; text-align: left;">{{ job.client_request.requested_client.client_location }}</span></li>
+        <li><span class="text-secondary"><i class="fas fa-money-bill"></i></span> <span style="color: #acacac; font-size: 10pt; text-align: left;">Salary:</span> <span style="font-size: 10pt; text-align: left;">{{ job.job_salary|intcomma }}</span></li>
+        <li><span class="text-secondary"><i class="fas fa-business-time"></i></span> <span style="color: #acacac; font-size: 10pt; text-align: left;">Min. exp:</span> <span style="font-size: 10pt; text-align: left;">{{ job.job_minimum_experience }}</span></li>
+     </ul>
+    <p class="card-text">{{ job.job_description }}</p>
+
+    <!-- Card Content - Collapse -->
+    <div class="collapse-hide collapse hide" id="collapseCard">
+      <h5 class="card-title">Company Overview</h5>
+      <p class="card-text">{{ job.job_company_overview }}</p>
+
+      <h5 class="card-title">Specialization</h5>
+      <ul>
+        <li><p class="card-text">{{ job.job_specialization }}</p></li>
+      </ul>
+
+      <h5 class="card-title">Job Qualifications</h5>
+      <ul>
+      {% for qualifications in job.job_vacancy_jq_fk.all %}
+       <li>{{ qualifications }}</li>
+      {% empty %}
+       <li>No qualifications defined.</li>
+      {% endfor %}
+      </ul>
+
+      <h5 class="card-title">Job Responsibilities</h5>
+      <ul>
+      {% for responsibilities in job.job_vacancy_jr_fk.all %}
+       <li>{{ responsibilities }}</li>
+      {% empty %}
+       <li>No responsibilities defined.</li>
+      {% endfor %}
+      </ul>
+      <div class="dropdown-divider"></div>
+    </div>
+
+    <a href="#collapseCard" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCard" class="btn btn-primary">Read More &rarr;</a>
+ 
+    {% if profile %}
+    {% for p in profile %}
+        <button type="button" data-url="{% url 'applicant_side_job_request' job.id p.id %}" class="btn btn-success show-apply-form" data-toggle="tooltip" data-placement="top" title="Apply"> 
+          Apply
+          <i class="fas fa-clipboard-check"></i>
+      </button>
+    {% endfor %}
+
+    {% endif %}
+	
+
+  </div>
+
+  <div class="card-footer">
+    <div style="text-align:left;">
+      Posted on {{ job.client_request.data_requested }} by
+      <a href="#">PRI</a>
+      <span style="float:right;">
+           Deadline: <span class="badge badge-danger">{{ job.job_deadline }}</span>
+      </span>
+    </div>
+  </div>
+</div>
+{% empty %}
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="card-title text-center">No Job Posted Yet!</h2>
+    <p class="card-text text-center">PRI will post job vacancies so keep in touch!</p>
+  </div>
+</div>
+
+{% endfor %}
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+    //var count = $("div[class*='collapse hide']").length;
+     $('.btn-primary').each(function(i){
+        var y = 0;
+        //set new arial controls
+        $(this).attr('aria-controls', 'collapseCard' + (y++));
+
+        //set new href
+        var new_href = $(this).attr('href', '#collapseCard'+(i++));
+
+
+        // get / check href
+        var href = $(this).attr('href');
+        console.log("a: "+href);
+    });
+
+    $("div .collapse-hide").each(function(x){
+        //Old ID
+        var i = $(this).attr('id');
+
+        //New ID
+        var change_id = $(this).attr('id', 'collapseCard' + (x++));
+        //Check New ID
+        var new_i = $(this).attr('id');
+        console.log("div: "+new_i);
+    });
+
+});
+</script>

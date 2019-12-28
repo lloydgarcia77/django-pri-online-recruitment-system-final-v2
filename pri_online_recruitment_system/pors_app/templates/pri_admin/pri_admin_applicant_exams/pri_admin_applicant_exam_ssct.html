@@ -1,0 +1,20 @@
+{% extends 'pri_admin/pri_admin_applicant_exams/pri_admin_applicant_exam_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Test 3: Essay
+{% endblock title %}
+
+{% block body %}
+<!-- Main Content -->
+<h1>Sach's Sentence Completion Test</h1>
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ scctForm|crispy }}
+        <button type="submit" id="submit">Submit Exam</button>
+    </form>
+</div>
+
+
+{% endblock body %}

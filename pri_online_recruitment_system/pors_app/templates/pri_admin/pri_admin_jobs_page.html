@@ -1,0 +1,101 @@
+{% extends 'pri_admin/pri_admin_index.html' %}
+
+{% block inner_body %}
+<!-- Breadcrumbs-->
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active">Jobs Vacancies Page</li>
+</ol>
+
+
+<!-- DataTables Example -->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Jobs Vacancies Table
+    </div>
+    <div class="card-body">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <!-- Navbar Search -->
+
+           <form method="POST" id="form-search-jobs"> <!--class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" -->
+                <div class="input-group">
+                    <input id="search-jobs" type="text" class="form-control" placeholder="Search for..." aria-label="Search"
+                           aria-describedby="basic-addon2" required>
+                    <div class="input-group-append">
+                        <button class="btn btn-success btn-search-jobs" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <form style="width: 60%">
+                 <div class="input-group">
+                       <select class="form-control" id="record-limit-jobs" style="width: 10%">
+                            <option disabled selected hidden>Show Limit</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>25</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                     <select class="form-control" id="column-jobs" style="width: 20%">
+                            <option disabled selected hidden>Sort by</option>
+                         {% for col in columns %}
+                         <option>{{ col|title }}</option>
+                         {% endfor %}
+                        </select>
+                    <select class="form-control" id="sort-order-jobs" style="width: 15%">
+                            <option>Descending</option>
+                            <option>Ascending</option>
+                    </select>
+
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="button" id="button-sort-jobs">
+                            <i class="fas fa-sort"></i>
+                        </button>
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+
+        <div class="table-responsive" id="table-jobs">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-family: candara; font-size: 15px">
+                <thead>
+                <tr>
+                    <th style="width: 5%" class="text-center">ID</th>
+                    <th style="width: 20%" class="text-center">Client</th>
+                    <th style="width: 20%" class="text-center">Title</th>
+                    <th style="width: 10%" class="text-center">Category</th>
+                    <th style="width: 10%" class="text-center">Specialization</th>
+                    <th style="width: 10%" class="text-center">Min. Exp</th>
+                    <th style="width: 10%" class="text-center">Salary</th>
+                    <th style="width: 10%" class="text-center">Deadline</th>
+                    <th style="width: 5%" class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                 {% include 'pri_admin/tables/pri_admin_jobs_table.html' %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="pagination-jobs" class="text-center">
+            {% include 'pri_admin/paginators/pri_admin_users_pagination.html' %}
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+<p class="small text-center text-muted my-5">
+    <em>To God be the Glory</em>
+</p>
+
+{% endblock inner_body %}

@@ -1,0 +1,413 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Exam List</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    <div class="container">
+        
+        <div class="jumbotron">
+                <a type="button" class="btn btn-primary" href="{% url 'applicant_side_job_posts_all' %}">
+                        <i class="fas fa-arrow-left"></i>
+                    Go to Home page
+                </a>
+           
+            <h1 class="display-4">Hello, {{ profile.lname }}, {{ profile.fname }} {{ profile.mname }}</h1>
+            <p class="lead">Here you can view your exam results and assessment</p>
+            
+            <hr class="my-4">
+            <p>You may take exam if the administrator enable it and if you failed, you can retake again.</p>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered text-center" style="font-family: candara; font-size: 17px">
+                        <thead>
+                            <tr> 
+                                <th scope="col">Exam Name</th>
+                                <th scope="col">Date Taken</th>
+                                <th scope="col">Score</th>
+                                <th scope="col">Ratings</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if job_vacancy.job_vacancy_applied.job_category == 'Janitor' %}
+                                <tr>                                    
+                                    <th class="text-left">Sach's Sentence Completion Test</th>
+                                {% for item in scct_score %}
+                                    <td>{{ item.date_taken_scct }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_scct }} / {{ item.over_scct }} </span></td>
+                                
+                                    <td>
+                                        {% if item.status_scct == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_scct }}</span>
+                                        {% elif item.status_scct == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_scct }}</span>
+                                        {% elif item.status_scct == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_scct }}</span>
+                                        {% endif %}  
+                                    </td>
+                                    <td>
+                                        {% if item.ratings_scct == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_scct }}</span>
+                                        {% elif item.ratings_scct == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_scct }}</span>
+                                        {% elif item.ratings_scct == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_scct }}</span>                                   
+                                        {% elif item.ratings_scct == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_scct }}</span>
+                                        {% elif item.ratings_scct == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_scct }}</span>
+                                        {% endif %}  
+                                    </td>
+                                {% empty %}
+                                <td> Not Set </td>
+                                <td> Not Set </td> 
+                                <td> Not Set </td>
+                                <td> Not Set </td> 
+                                {% endfor %} 
+                                    <td>
+                                        <button {% for test in scct_score %}{% if not test.allow_retake_scct %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_scct' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr>
+                            {% else %}
+                            <tr>
+                                    
+                                    <th class="text-left">Test I  -  Pre-Employment</th>
+                                    {% for item in t1pe_score %}
+                                    <td>{{ item.date_taken_t1pe }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_t1pe }} / {{ item.over_t1pe }} </span></td>
+                                    
+                                    <td>
+                                            {% if item.status_t1pe == 'Passed' %}
+                                                <span class="badge badge-success">{{ item.status_t1pe }}</span>
+                                            {% elif item.status_t1pe == 'Failed' %}
+                                                <span class="badge badge-danger">{{ item.status_t1pe }}</span>
+                                            {% elif item.status_t1pe == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.status_t1pe }}</span>
+                                            {% endif %}  
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t1pe == 'Outstanding' %}
+                                                <span class="badge badge-success">{{ item.ratings_t1pe }}</span>
+                                            {% elif item.ratings_t1pe == 'Average' %}
+                                                <span class="badge badge-info">{{ item.ratings_t1pe }}</span>
+                                            {% elif item.ratings_t1pe == 'Below Average' %}
+                                                <span class="badge badge-warning">{{ item.ratings_t1pe }}</span>                                   
+                                            {% elif item.ratings_t1pe == 'Poor' %}
+                                                <span class="badge badge-danger">{{ item.ratings_t1pe }}</span>
+                                            {% elif item.ratings_t1pe == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.ratings_t1pe }}</span>
+                                            {% endif %}  
+                                        </td>
+                                    {% empty %}
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    <td> Not Set </td>
+                                    <td> Not Set </td>  
+                                     {% endfor %} 
+                                     <td>
+                                        <button {% for test in t1pe_score %}{% if not test.allow_retake_t1pe %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_test1' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    
+                                    <th class="text-left">Test II  - Simple English</th>
+                                    {% for item in t2se_score %}
+                                    <td>{{ item.date_taken_t2se }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_t2se }} / {{ item.over_t2se }} </span></td>
+                                
+                                    <td>
+                                            {% if item.status_t2se == 'Passed' %}
+                                                <span class="badge badge-success">{{ item.status_t2se }}</span>
+                                            {% elif item.status_t2se == 'Failed' %}
+                                                <span class="badge badge-danger">{{ item.status_t2se }}</span>
+                                            {% elif item.status_t2se == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.status_t2se }}</span>
+                                            {% endif %}  
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t2se == 'Outstanding' %}
+                                                <span class="badge badge-success">{{ item.ratings_t2se }}</span>
+                                            {% elif item.ratings_t2se == 'Average' %}
+                                                <span class="badge badge-info">{{ item.ratings_t2se }}</span>
+                                            {% elif item.ratings_t2se == 'Below Average' %}
+                                                <span class="badge badge-warning">{{ item.ratings_t2se }}</span>                                   
+                                            {% elif item.ratings_t2se == 'Poor' %}
+                                                <span class="badge badge-danger">{{ item.ratings_t2se }}</span>
+                                            {% elif item.ratings_t2se == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.ratings_t2se }}</span>
+                                            {% endif %}  
+                                        </td>
+                                    {% empty %}
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    {% endfor %} 
+                                    <td>
+                                        <button {% for test in t2se_score %}{% if not test.allow_retake_t2se %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_test2' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    
+                                    <th class="text-left">Test III -  Essay</th>
+                                    {% for item in t3e_score %}
+                                    <td>{{ item.date_taken_t3e }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_t3e }} / {{ item.over_t3e }} </span></td>
+                                
+                                    <td>
+                                            {% if item.status_t3e == 'Passed' %}
+                                                <span class="badge badge-success">{{ item.status_t3e }}</span>
+                                            {% elif item.status_t3e == 'Failed' %}
+                                                <span class="badge badge-danger">{{ item.status_t3e }}</span>
+                                            {% elif item.status_t3e == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.status_t3e }}</span>
+                                            {% endif %}  
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t3e == 'Outstanding' %}
+                                                <span class="badge badge-success">{{ item.ratings_t3e }}</span>
+                                            {% elif item.ratings_t3e == 'Average' %}
+                                                <span class="badge badge-info">{{ item.ratings_t3e }}</span>
+                                            {% elif item.ratings_t3e == 'Below Average' %}
+                                                <span class="badge badge-warning">{{ item.ratings_t3e }}</span>                                   
+                                            {% elif item.ratings_t3e == 'Poor' %}
+                                                <span class="badge badge-danger">{{ item.ratings_t3e }}</span>
+                                            {% elif item.ratings_t3e == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.ratings_t3e }}</span>
+                                            {% endif %}  
+                                        </td>
+                                    {% empty %}
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    {% endfor %} 
+                                    <td>
+                                        <button {% for test in t3e_score %}{% if not test.allow_retake_t3e %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_test3' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    
+                                    <th class="text-left">Test III -  Personality Test (Sentence Completion Test)</th>
+                                    {% for item in t3ptsct_score %}
+                                    <td>{{ item.date_taken_t3ptsct }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_t3ptsct }} / {{ item.over_t3ptsct }} </span></td>
+                                
+                                    <td>
+                                            {% if item.status_t3ptsct == 'Passed' %}
+                                                <span class="badge badge-success">{{ item.status_t3ptsct }}</span>
+                                            {% elif item.status_t3ptsct == 'Failed' %}
+                                                <span class="badge badge-danger">{{ item.status_t3ptsct }}</span>
+                                            {% elif item.status_t3ptsct == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.status_t3ptsct }}</span>
+                                            {% endif %}  
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t3ptsct == 'Outstanding' %}
+                                                <span class="badge badge-success">{{ item.ratings_t3ptsct }}</span>
+                                            {% elif item.ratings_t3ptsct == 'Average' %}
+                                                <span class="badge badge-info">{{ item.ratings_t3ptsct }}</span>
+                                            {% elif item.ratings_t3ptsct == 'Below Average' %}
+                                                <span class="badge badge-warning">{{ item.ratings_t3ptsct }}</span>                                   
+                                            {% elif item.ratings_t3ptsct == 'Poor' %}
+                                                <span class="badge badge-danger">{{ item.ratings_t3ptsct }}</span>
+                                            {% elif item.ratings_t3ptsct == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.ratings_t3ptsct }}</span>
+                                            {% endif %}  
+                                        </td>
+                                    {% empty %}
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    {% endfor %} 
+                                    <td>
+                                        <button {% for test in t3ptsct_score %}{% if not test.allow_retake_t3ptsct %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_test3_sct' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    
+                                    <th class="text-left">Test IV  -  Abstract Reasoning</th>
+                                    {% for item in t4ar_score %}
+                                    <td>{{ item.date_taken_t4ar }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_t4ar }} / {{ item.over_t4ar }} </span></td>
+                                
+                                    <td>
+                                            {% if item.status_t4ar == 'Passed' %}
+                                                <span class="badge badge-success">{{ item.status_t4ar }}</span>
+                                            {% elif item.status_t4ar == 'Failed' %}
+                                                <span class="badge badge-danger">{{ item.status_t4ar }}</span>
+                                            {% elif item.status_t4ar == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.status_t4ar }}</span>
+                                            {% endif %}  
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t4ar == 'Outstanding' %}
+                                                <span class="badge badge-success">{{ item.ratings_t4ar }}</span>
+                                            {% elif item.ratings_t4ar == 'Average' %}
+                                                <span class="badge badge-info">{{ item.ratings_t4ar }}</span>
+                                            {% elif item.ratings_t4ar == 'Below Average' %}
+                                                <span class="badge badge-warning">{{ item.ratings_t4ar }}</span>                                   
+                                            {% elif item.ratings_t4ar == 'Poor' %}
+                                                <span class="badge badge-danger">{{ item.ratings_t4ar }}</span>
+                                            {% elif item.ratings_t4ar == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.ratings_t4ar }}</span>
+                                            {% endif %}  
+                                        </td>
+                                    {% empty %}
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    {% endfor %} 
+                                    <td>
+                                        <button {% for test in t4ar_score %}{% if not test.allow_retake_t4ar %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_test4' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    
+                                    <th class="text-left">Customer Care Ability Test</th>
+                                    {% for item in cca_score %}
+                                    <td>{{ item.date_taken_cca }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_cca }} / {{ item.over_cca }} </span></td>
+                                
+                                    <td>
+                                            {% if item.status_cca == 'Passed' %}
+                                                <span class="badge badge-success">{{ item.status_cca }}</span>
+                                            {% elif item.status_cca == 'Failed' %}
+                                                <span class="badge badge-danger">{{ item.status_cca }}</span>
+                                            {% elif item.status_cca == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.status_cca }}</span>
+                                            {% endif %}  
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_cca == 'Outstanding' %}
+                                                <span class="badge badge-success">{{ item.ratings_cca }}</span>
+                                            {% elif item.ratings_cca == 'Average' %}
+                                                <span class="badge badge-info">{{ item.ratings_cca }}</span>
+                                            {% elif item.ratings_cca == 'Below Average' %}
+                                                <span class="badge badge-warning">{{ item.ratings_cca }}</span>                                   
+                                            {% elif item.ratings_cca == 'Poor' %}
+                                                <span class="badge badge-danger">{{ item.ratings_cca }}</span>
+                                            {% elif item.ratings_cca == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.ratings_cca }}</span>
+                                            {% endif %}  
+                                        </td>
+                                    {% empty %}
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    {% endfor %} 
+                                    <td>
+                                        <button {% for test in cca_score %}{% if not test.allow_retake_cca %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_ccat' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    
+                                    <th class="text-left">Applicant Risk Profiler</th>
+                                    {% for item in arp_score %}
+                                    <td>{{ item.date_taken_arp }}</td>
+                                    <td><span class="badge badge-success">{{ item.score_arp }} / {{ item.over_arp }} </span></td>
+                                
+                                    <td>
+                                            {% if item.status_arp == 'Passed' %}
+                                                <span class="badge badge-success">{{ item.status_arp }}</span>
+                                            {% elif item.status_arp == 'Failed' %}
+                                                <span class="badge badge-danger">{{ item.status_arp }}</span>
+                                            {% elif item.status_arp == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.status_arp }}</span>
+                                            {% endif %}  
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_arp == 'Outstanding' %}
+                                                <span class="badge badge-success">{{ item.ratings_arp }}</span>
+                                            {% elif item.ratings_arp == 'Average' %}
+                                                <span class="badge badge-info">{{ item.ratings_arp }}</span>
+                                            {% elif item.ratings_arp == 'Below Average' %}
+                                                <span class="badge badge-warning">{{ item.ratings_arp }}</span>                                   
+                                            {% elif item.ratings_arp == 'Poor' %}
+                                                <span class="badge badge-danger">{{ item.ratings_arp }}</span>
+                                            {% elif item.ratings_arp == 'On progress' %}
+                                                <span class="badge badge-primary">{{ item.ratings_arp }}</span>
+                                            {% endif %}  
+                                        </td>
+                                    {% empty %}
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    <td> Not Set </td>
+                                    <td> Not Set </td> 
+                                    {% endfor %} 
+                                    <td>
+                                        <button {% for test in arp_score %}{% if not test.allow_retake_arp %}disabled{% endif %}{% endfor %} type="button" class="btn btn-success" onclick="window.location.href = '{% url 'pri:applicant_exam_arp' profile.secure_key_id job_vacancy.id %}';"><i class="fas fa-edit"></i>Take
+                                            Exam</button>
+                                    </td>
+                                </tr>  
+                            {% endif %} 
+                        </tbody>
+                        <tfoot style="border: solid 1px #1E1E1E;">
+                            <!-- Display total score and compute the passing score -->
+                            <tr> 
+                                <th scope="col" colspan="2">Total Score (Final Score)</th>
+                                <th scope="col">
+                                    
+                                    {% if final_score > final_passing_score %}
+                                    <span class="badge badge-success">{{final_score}} / {{final_over}}</span>
+                                    {% else %}
+                                    <span class="badge badge-danger">{{final_score}} / {{final_over}}</span>
+                                    {% endif %}
+                                </th>   
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin.min.js' %}"></script>
+</body>
+
+</html>

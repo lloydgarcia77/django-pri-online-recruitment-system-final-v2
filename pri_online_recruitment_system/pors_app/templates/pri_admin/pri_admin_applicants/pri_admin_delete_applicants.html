@@ -1,0 +1,24 @@
+{% load crispy_forms_tags %}
+<form class="delete-applicant-form" method="POST" data-url="{% url 'pri:applicant_delete_record' applicant_profile.secure_key_id %}">
+
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Deleting Applicant: <strong>{{ applicant_profile.lname }}, {{ applicant_profile.fname }} {{ applicant_profile.mname}}? </strong></h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="lead"><strong>Note:</strong> All the applicant information including: <strong>User accounts, 
+            profile information, request status, hiring details from the client and etc. will be deleted permanently!
+        </strong> Are you sure you want to continue in deleting this applicant?:</p>  
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+
+
+</form>

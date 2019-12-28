@@ -1,0 +1,50 @@
+{% load staticfiles %}
+{% for record in query %}
+<tr>
+    <td class="text-center">{{ record.id }}</td>
+    <td align="center"> <img class="img-profile rounded-circle" src="
+    {% if record.client_company_logo %}
+    {{ record.client_company_logo.url }}
+    {% else %}
+    {% static 'images\Administrator Male_48px.png' %}
+    {% endif %}" width="50" height="50">
+    </td>
+    <td class="text-center">{{ record.client_company_name }}</td>
+    <td class="text-center">{{ record.client_user.last_name }}, {{ record.client_user.middle_name }} {{ record.client_user.first_name }}</td>
+    <td class="text-center">{{ record.client_location }}</td>
+    <td class="text-center">{{ record.contact_person }}</td>
+    <td class="text-center">{{ record.contact_mobile_no }}</td>
+    <td class="text-center">{{ record.client_user.user.email }}</td>
+
+    <td align="center">
+        <div class="d-md-flex align-items-center justify-content-between mb-4">
+
+            {% if policy.pri_can_edit_clients %}
+            <button type="button" data-url="{% url 'pri:edit_clients' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm show-form-edit-client" data-toggle="tooltip" data-placement="top" title="Edit">
+                <span class="fas fa-pencil-alt fa-sm text-black-50"></span>
+            </button>
+            {% endif %}
+
+            {% if policy.pri_can_delete_clients %}
+            <button type="button" data-url="{% url 'pri:delete_clients' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm show-form-delete-client" data-toggle="tooltip" data-placement="top" title="Delete">
+                <span class="fas fa-trash-alt fa-sm text-white-50"></span>
+            </button>
+            {% endif %}
+
+            {% if policy.pri_can_hired_clients %}
+            <button type="button" onclick="window.location.href = '{% url 'pri:client_applicants' record.id %}';"
+                    class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm show-client-applicants" data-toggle="tooltip" data-placement="top" title="Hired Applicants">
+                <span class="fas fa-user-check fa-sm text-white-50"></span>
+            </button>
+            {% endif %}
+        </div>
+
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="9" class="text-center bg-warning">No Records!</td>
+</tr>
+{% endfor %}

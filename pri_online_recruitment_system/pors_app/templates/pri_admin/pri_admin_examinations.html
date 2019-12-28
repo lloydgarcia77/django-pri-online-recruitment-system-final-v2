@@ -1,0 +1,117 @@
+{% extends 'pri_admin/pri_admin_index.html' %}
+  
+
+{% block inner_body %}
+<!-- Breadcrumbs--> 
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active">Admin Page</li>
+</ol>
+
+
+<!-- DataTables Example -->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Users Table
+    </div>
+    <div class="card-body">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <!-- Navbar Search -->
+
+           <form method="POST" id="form-search-admin"> <!--class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" -->
+                <div class="input-group">
+                    <input id="search-admin" type="text" class="form-control" placeholder="Search for..." aria-label="Search"
+                           aria-describedby="basic-addon2" required>
+                    <div class="input-group-append">
+                        <button class="btn btn-success btn-search-admin" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <form style="width: 50%">
+                 <div class="input-group">
+                       <select class="form-control" id="record-limit-admin" style="width: 15%">
+                            <option disabled selected hidden>Show Limit</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>25</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                     <select class="form-control" id="column-admin">
+                            <option disabled selected hidden>Sort by</option>
+                         {% for col in columns %}
+                         <option>{{ col|title }}</option>
+                         {% endfor %}
+                        </select>
+                    <select class="form-control" id="sort-order-admin" style="width: 15%">
+                            <option>Descending</option>
+                            <option>Ascending</option>
+                    </select>
+
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="button" id="button-sort-admin">
+                            <i class="fas fa-sort"></i>
+                        </button>
+                    </div>
+
+
+                </div>
+            </form>
+
+            <button type="button" data-url="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm show-form-create-admin">
+                <span class="fas fa-plus fa-sm text-white-50"></span>
+                Create new account
+            </button>
+
+        </div>
+
+        <div class="table-responsive" id="table_admin">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Picture</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Position</th>
+                    <th>Department</th>
+                    <th style="width: 200px" class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ex in exam %}
+                    {% for q in ex.exam_question_fk.all %}
+                        {{ q }}
+                        {% for c in q.question_choices_fk.all %}
+                            <p>{{ c }}</p>
+                        {% endfor %}
+                    {% endfor %}
+
+                {% endfor %}
+ 
+             
+
+                </tbody>
+            </table>
+        </div>
+
+        <div id="pagination_admin" class="text-center">
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+<p class="small text-center text-muted my-5">
+    <em>To God be the Glory</em>
+</p>
+
+{% endblock inner_body %}
+ 
+

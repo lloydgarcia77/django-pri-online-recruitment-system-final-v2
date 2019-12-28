@@ -1,0 +1,268 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<!--
+https://bootsnipp.com/snippets/5Moza
+https://bootsnipp.com/snippets/E1nNa
+https://codepen.io/jeikuinu/pen/GBvgge
+-->
+<style>
+
+.image-container {
+    position: relative;
+ }
+
+.image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.image-container:hover .image {
+    opacity: 0.3;
+}
+
+.image-container:hover .middle {
+    opacity: 1;
+}
+
+
+
+/* The container-label */
+.container-label {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container-label:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container-label input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container-label input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container-label .checkmark:after {
+ 	top: 6px;
+	left: 6px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: white;
+}
+
+</style>
+
+
+<form class="update-profile-form" method="POST" enctype="multipart/form-data" data-url="{% url 'pri:admin_update_profile' form.instance.id %}">
+    {% csrf_token %}
+    <div class="container">
+        {% include 'partials/_messages.html' %}
+        {{ form.non_field_errors }}
+    </div>
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Profile</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+
+            <div class="card-title mb-4">
+                <div class="d-flex justify-content-start">
+                    <div class="image-container">
+                        <img src="
+                        {% if profile.image %}
+                            {{ profile.image.url }}
+                        {% else %}
+                            {% static 'images/150x150.png' %}
+                        {% endif %}
+                        " alt="http://placehold.it/150x150" id="imgProfile"
+                             style="width: 150px; height: 150px"
+                             class="img-thumbnail"/>
+                        <div class="middle">
+                            <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change"/>
+                            {{ form.image }}
+                            <!--<input type="file" style="display: none;" id="profilePicture" name="file"/>-->
+                        </div>
+                    </div>
+
+                    <div class="userData ml-3">
+                        <h6 class="d-block" style="font-size: 1.5rem; font-weight: bold">Username: <a href="#">{{ user.username }}</a></h6>
+                         <div class="dropdown-divider"></div>
+                        <h6 class="d-block">Level: </h6>
+                        <h6 class="d-block"><p>{{ form.level }} </p> </h6>
+                    </div>
+                    <div class="ml-auto">
+                        <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-4">
+
+                    <div class="form-label-group">
+
+                        <!--<input type="text" id="firstName" class="form-control" placeholder="First name" required="required" autofocus="autofocus">-->
+                        {{ form.first_name }}
+                        <label for="{{form.first_name.id_for_label}}">First
+                            name</label>
+                        <span class="error text-danger">   {{ form.first_name.errors|striptags }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-label-group">
+
+                        <!--<input type="text" id="firstName" class="form-control" placeholder="First name" required="required" autofocus="autofocus">-->
+                        {{ form.middle_name }}
+                        <label for="{{form.middle_name.id_for_label}}">Middle
+                            name</label>
+                        <span class="error text-danger">   {{ form.middle_name.errors|striptags }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-label-group">
+
+                        <!--<input type="text" id="firstName" class="form-control" placeholder="First name" required="required" autofocus="autofocus">-->
+                        {{ form.last_name }}
+                        <label for="{{form.last_name.id_for_label}}">Last
+                            name</label>
+                        <span class="error text-danger">   {{ form.last_name.errors|striptags }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-4">
+                    <div class="form-label-group">
+                        <!--<input type="text" id="firstName" class="form-control" placeholder="First name" required="required" autofocus="autofocus">-->
+                        {{ form.age }}
+                        <label for="{{form.age.id_for_label}}">Age</label>
+                        <span class="error text-danger">   {{ form.age.errors|striptags }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-label-group">
+                        <!--<input type="text" id="firstName" class="form-control" placeholder="First name" required="required" autofocus="autofocus">-->
+                        {{ form.contact }}
+                        <label for="{{form.contact.id_for_label}}">Contact</label>
+                        <span class="error text-danger">   {{ form.contact.errors|striptags }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-label-group">
+                        <!--<input type="text" id="firstName" class="form-control" placeholder="First name" required="required" autofocus="autofocus">-->
+                        {{ form.department }}
+                        <label for="{{form.department.id_for_label}}">Department</label>
+                        <span class="error text-danger">   {{ form.department.errors|striptags }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+
+                <div class="col-md-2">
+                    {% for choice in form.gender %}
+                    <label class="container-label">{{ choice.choice_label }}
+                        {{ choice.tag }}
+                        <span class="checkmark"></span>
+                    </label>
+                    {% endfor %}
+                </div>
+                <div class="col-md-5">
+                    <div class="form-label-group">
+                        {{ form.position }}
+                        <label for="{{form.position.id_for_label}}">Position</label>
+                        <span class="error text-danger">   {{ form.position.errors|striptags }}</span>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-label-group">
+                        {{ form.address }}
+                        <label for="{{form.address.id_for_label}}">Address</label>
+                        <span class="error text-danger">   {{ form.address.errors|striptags }}</span>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--END of Body Modal-->
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+
+</form>

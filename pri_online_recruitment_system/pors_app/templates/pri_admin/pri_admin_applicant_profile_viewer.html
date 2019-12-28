@@ -1,0 +1,1165 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Applicant Profile Viewer</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+
+    <style>
+        body {
+            background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        }
+
+        .emp-profile {
+            padding: 3%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: #fff;
+        }
+
+        .profile-img {
+            text-align: center;
+        }
+
+        .profile-img img {
+            width: 280px;
+            height: 200px;
+        }
+
+        .profile-img .file {
+            position: relative;
+            overflow: hidden;
+            margin-top: -20%;
+            width: 70%;
+            border: none;
+            border-radius: 0;
+            font-size: 15px;
+            background: #212529b8;
+        }
+
+        .profile-img .file input {
+            position: absolute;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .profile-head h5 {
+            color: #333;
+        }
+
+        .profile-head h6 {
+            color: #0062cc;
+        }
+
+        .profile-edit-btn {
+            border: none;
+            border-radius: 1.5rem;
+            width: 100%;
+            padding: 2%;
+            font-weight: 600;
+            color: #FFF;
+            cursor: pointer;
+            background: #4CAF50;
+        }
+
+        .proile-rating {
+            font-size: 12px;
+            color: #818182;
+            margin-top: 5%;
+        }
+
+        .proile-rating span {
+            color: #495057;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .profile-head .nav-tabs {
+            margin-bottom: 5%;
+        }
+
+        .profile-head .nav-tabs .nav-link {
+            font-weight: 600;
+            border: none;
+        }
+
+        .profile-head .nav-tabs .nav-link.active {
+            border: none;
+            border-bottom: 2px solid #0062cc;
+        }
+
+        .profile-work {
+            padding: 14%;
+            margin-top: -15%;
+        }
+
+        .profile-work p {
+            font-size: 12px;
+            color: #818182;
+            font-weight: 600;
+            margin-top: 10%;
+        }
+
+        .profile-work a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .profile-work ul {
+            list-style: none;
+        }
+
+        .profile-tab label {
+            font-weight: 600;
+        }
+
+        .profile-tab p {
+            font-weight: 600;
+            color: #0062cc;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container emp-profile">
+          <div class="row" style="margin-bottom: 2%;">
+                <div class="col-md-4">
+                        
+                        <a type="button" class="btn btn-primary" href="{% url 'pri:dashboard' %}">
+                                <i class="fas fa-arrow-left"></i>
+                            Go to dashboard
+                        </a>
+                </div>
+          </div>
+        <form method="post">
+            {% csrf_token %}
+            {% for applicant in applicants %}
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="
+                        
+                        {% if applicant.applicant.image %}
+                        {{ applicant.image.url }}
+                        {% else %}
+                        {% static 'images\Administrator Male_48px.png' %}
+                        {% endif %}
+                        " alt="" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5>
+                            {{applicant.fname}} {{applicant.mname}} {{applicant.lname}}
+                        </h5>
+                        <h6>
+                            {{applicant.user.email}}
+                        </h6>
+                        <p class="proile-rating">EXAM SCORE : <span>{{final_score}} / {{final_over}}</span></p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="family-tab" data-toggle="tab" href="#family" role="tab"
+                                    aria-controls="family" aria-selected="true">Family</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="body-tab" data-toggle="tab" href="#body" role="tab"
+                                    aria-controls="profile" aria-selected="false">Body</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="government-tab" data-toggle="tab" href="#government" role="tab"
+                                    aria-controls="profile" aria-selected="false">Government</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="siblings-tab" data-toggle="tab" href="#siblings" role="tab"
+                                    aria-controls="profile" aria-selected="false">Siblings</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="employment-history-tab" data-toggle="tab"
+                                    href="#employment-history" role="tab" aria-controls="profile"
+                                    aria-selected="false">Employment History</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="educational-attainment-tab" data-toggle="tab"
+                                    href="#educational-attainment" role="tab" aria-controls="profile"
+                                    aria-selected="false">Educational Attainment</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="trainings-tab" data-toggle="tab" href="#trainings" role="tab"
+                                    aria-controls="profile" aria-selected="false">Trainings</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="character-reference-tab" data-toggle="tab"
+                                    href="#character-reference" role="tab" aria-controls="profile"
+                                    aria-selected="false">Character References</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="exam-tab" data-toggle="tab" href="#exam" role="tab"
+                                    aria-controls="profile" aria-selected="false">Exam</a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Hire Applicant" />                    
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-work">
+                        <p>PERSONAL DETAILS</p>
+                        <a href=""> {{ applicant.mobile_no }}</a><br />
+                        <a href="">{{ applicant.telephone_no }}</a><br />
+                        <a href="">{{ applicant.gender }}</a><br />
+                        <a href="">{{ applicant.civil_status }}</a>
+
+                        <p>PRESENT ADDRESS</p>
+                        <a href="">{{applicant.bldg_name_0}}</a><br />
+                        <a href="">{{applicant.brgy_sub_0}}</a><br />
+                        <a href="">{{applicant.dis_mun_0}}</a><br />
+                        <a href="">{{applicant.cit_pro_0}}</a><br />
+
+                        <p>PERMANENT ADDRESS</p>
+                        <a href="">{{applicant.bldg_name_1}}</a><br />
+                        <a href="">{{applicant.brgy_sub_1}}</a><br />
+                        <a href="">{{applicant.dis_mun_1}}</a><br />
+                        <a href="">{{applicant.cit_pro_1}}</a><br />
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="family" role="tabpanel" aria-labelledby="family-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Contact Person</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.contact_person}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Relationship</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.relationship}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Mobile No.</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.contact_person_mobile_no}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Spouse Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.spouse_full_name}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Contact No</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.spouse_contact_number}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Father Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.father_full_name}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Occupation</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.father_occupation}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.father_home_address}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Mother Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.mother_full_name}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Occupation</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.mother_occupation}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{applicant.mother_home_address}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="body" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Weight (lbs)</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.weight}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Height (Inch)</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.height}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Shirt Size</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.shirt_size}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Shoe Size</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.shoe_size}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Waistline</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.waistline}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Length of pants</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.length_of_pants}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="government" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>SSS</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.sss}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>CTC</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.ctc}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Philhealth</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.philhealth}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>TIN</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.tin}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Pagibig</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ applicant.pagibig}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="siblings" role="tabpanel" aria-labelledby="profile-tab">
+                            {% for siblings in applicant.siblings_applicant_fk.all %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ siblings.name}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Age</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ siblings.age }} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Occupation</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ siblings.occ}} </p>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+
+                        </div>
+                        <div class="tab-pane fade" id="employment-history" role="tabpanel"
+                            aria-labelledby="profile-tab">
+                            {% for employment in applicant.employment_applicant_fk.all %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Date From</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ employment.date_from}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Date To</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ employment.date_to }} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Company</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ employment.company}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Position</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ employment.position }} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Reason for leaving</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ employment.reason_for_leaving }} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Basic salary pay</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ employment.basic_salary_pay}} </p>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+
+                        </div>
+                        <div class="tab-pane fade" id="educational-attainment" role="tabpanel"
+                            aria-labelledby="profile-tab">
+                            {% for education in applicant.educational_applicant_fk.all %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>College</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.college }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Course</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.college_course }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.college_address}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>From</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.csya_from}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>To</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.csya_to}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Vocational</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.vocational}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Course</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.vocational_course}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.vocational_address}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>From</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.vsya_from}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>To</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.vsya_to}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Highschool</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.highschool}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.highschool_address}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>From</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.hsya_from}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>To</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.hsya_to}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Elementary</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.elementary}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.elementary_address}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>From</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.esya_from}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>To</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.esya_to}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Special skills</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.special_skills}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Language speak</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ education.language_speak}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                        </div>
+                        <div class="tab-pane fade" id="trainings" role="tabpanel" aria-labelledby="profile-tab">
+                            {% for training in applicant.tranings_applicant_fk.all %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Title</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ training.title}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Date Attended</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ training.date_attended }} </p>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+
+                        </div>
+                        <div class="tab-pane fade" id="character-reference" role="tabpanel"
+                            aria-labelledby="profile-tab">
+                            {% for character in applicant.character_references_applicant_fk.all %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ character.full_name}} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Occupation</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ character.occupation }} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Contact No</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ character.contact_no }} </p>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+
+                        </div>
+                        <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="profile-tab">
+                            <table class="table table-bordered text-center"
+                                style="font-family: candara; font-size: 15px">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Exam Name</th>
+                                        <th scope="col">Date Taken</th>
+                                        <th scope="col">Score</th>
+                                        <th scope="col">Ratings</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if job_vacancy.job_category == 'Janitor' %}
+                                    <tr>
+                                        <th class="text-left">
+                                                <a href="
+                                                {% if scct_score %}
+                                                {% url 'pri:applicant_exam_scct_review' applicant.secure_key_id job_vacancy.id %}
+                                                {% else %}
+                                                #
+                                                {% endif %}                                            
+                                                " data-toggle="tooltip" title="Review Exam">Sach's Sentence Completion Test</a>
+                                            
+                                        </th>
+                                        {% for item in scct_score %}
+                                        <td>{{ item.date_taken_scct }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_scct }} /
+                                                {{ item.over_scct }}
+                                            </span></td>
+
+                                        <td>
+                                            {% if item.status_scct == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_scct }}</span>
+                                            {% elif item.status_scct == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_scct }}</span>
+                                            {% elif item.status_scct == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_scct }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_scct == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_scct }}</span>
+                                            {% elif item.ratings_scct == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_scct }}</span>
+                                            {% elif item.ratings_scct == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_scct }}</span>
+                                            {% elif item.ratings_scct == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_scct }}</span>
+                                            {% elif item.ratings_scct == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_scct }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <th class="text-left">
+                                                <a href="
+                                                {% if t1pe_score %}
+                                                {% url 'pri:applicant_exam_test1_review' applicant.secure_key_id job_vacancy.id %}
+                                                {% else %}
+                                                #
+                                                {% endif %}                                            
+                                                " data-toggle="tooltip" title="Review Exam">Test I - Pre-Employment</a>                                            
+                                        </th>
+                                        {% for item in t1pe_score %}
+                                        <td>{{ item.date_taken_t1pe }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_t1pe }} /
+                                                {{ item.over_t1pe }}
+                                            </span></td>
+
+                                        <td>
+                                            {% if item.status_t1pe == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_t1pe }}</span>
+                                            {% elif item.status_t1pe == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_t1pe }}</span>
+                                            {% elif item.status_t1pe == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_t1pe }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t1pe == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_t1pe }}</span>
+                                            {% elif item.ratings_t1pe == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_t1pe }}</span>
+                                            {% elif item.ratings_t1pe == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_t1pe }}</span>
+                                            {% elif item.ratings_t1pe == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_t1pe }}</span>
+                                            {% elif item.ratings_t1pe == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_t1pe }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">
+                                                <a href="
+                                                {% if t2se_score %}
+                                                {% url 'pri:applicant_exam_test2_review' applicant.secure_key_id job_vacancy.id %}
+                                                {% else %}
+                                                #
+                                                {% endif %}                                            
+                                                " data-toggle="tooltip" title="Review Exam">Test II - Simple English</a>                                            
+                                        </th>
+                                        {% for item in t2se_score %}
+                                        <td>{{ item.date_taken_t2se }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_t2se }} /
+                                                {{ item.over_t2se }}
+                                            </span></td>
+
+                                        <td>
+                                            {% if item.status_t2se == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_t2se }}</span>
+                                            {% elif item.status_t2se == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_t2se }}</span>
+                                            {% elif item.status_t2se == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_t2se }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t2se == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_t2se }}</span>
+                                            {% elif item.ratings_t2se == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_t2se }}</span>
+                                            {% elif item.ratings_t2se == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_t2se }}</span>
+                                            {% elif item.ratings_t2se == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_t2se }}</span>
+                                            {% elif item.ratings_t2se == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_t2se }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">
+                                            <a href="
+                                            {% if t3e_score %}
+                                            {% url 'pri:applicant_exam_test3_review' applicant.secure_key_id job_vacancy.id %}
+                                            {% else %}
+                                            #
+                                            {% endif %}                                            
+                                            " data-toggle="tooltip" title="Review Exam">Test III - Essay</a>
+                                        </th>
+                                        
+                                        {% for item in t3e_score %}
+                                        <td>{{ item.date_taken_t3e }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_t3e }} / {{ item.over_t3e }}
+                                            </span></td>
+
+                                        <td>
+                                            {% if item.status_t3e == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_t3e }}</span>
+                                            {% elif item.status_t3e == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_t3e }}</span>
+                                            {% elif item.status_t3e == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_t3e }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t3e == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_t3e }}</span>
+                                            {% elif item.ratings_t3e == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_t3e }}</span>
+                                            {% elif item.ratings_t3e == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_t3e }}</span>
+                                            {% elif item.ratings_t3e == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_t3e }}</span>
+                                            {% elif item.ratings_t3e == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_t3e }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">
+                                            <a href="
+                                            {% if t3ptsct_score %}
+                                            {% url 'pri:applicant_exam_test3_t3ptsct_review' applicant.secure_key_id job_vacancy.id %}
+                                            {% else %}
+                                            #
+                                            {% endif %}                                            
+                                            " data-toggle="tooltip" title="Review Exam">Test III - Personality Test (Sentence Completion Test)</a> 
+                                        </th>
+                                        {% for item in t3ptsct_score %}
+                                        <td>{{ item.date_taken_t3ptsct }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_t3ptsct }} /
+                                                {{ item.over_t3ptsct }} </span></td>
+
+                                        <td>
+                                            {% if item.status_t3ptsct == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_t3ptsct }}</span>
+                                            {% elif item.status_t3ptsct == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_t3ptsct }}</span>
+                                            {% elif item.status_t3ptsct == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_t3ptsct }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t3ptsct == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_t3ptsct }}</span>
+                                            {% elif item.ratings_t3ptsct == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_t3ptsct }}</span>
+                                            {% elif item.ratings_t3ptsct == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_t3ptsct }}</span>
+                                            {% elif item.ratings_t3ptsct == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_t3ptsct }}</span>
+                                            {% elif item.ratings_t3ptsct == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_t3ptsct }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+
+                                        <th class="text-left"> 
+                                        <a href="
+                                        {% if t4ar_score %}
+                                        {% url 'pri:applicant_exam_test4_review' applicant.secure_key_id job_vacancy.id %}
+                                        {% else %}
+                                        #
+                                        {% endif %}                                            
+                                        " data-toggle="tooltip" title="Review Exam">Test IV - Abstract Reasoning</a>   
+                                        </th>
+                                        {% for item in t4ar_score %}
+                                        <td>{{ item.date_taken_t4ar }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_t4ar }} /
+                                                {{ item.over_t4ar }}
+                                            </span></td>
+
+                                        <td>
+                                            {% if item.status_t4ar == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_t4ar }}</span>
+                                            {% elif item.status_t4ar == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_t4ar }}</span>
+                                            {% elif item.status_t4ar == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_t4ar }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_t4ar == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_t4ar }}</span>
+                                            {% elif item.ratings_t4ar == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_t4ar }}</span>
+                                            {% elif item.ratings_t4ar == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_t4ar }}</span>
+                                            {% elif item.ratings_t4ar == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_t4ar }}</span>
+                                            {% elif item.ratings_t4ar == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_t4ar }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+
+                                        <th class="text-left">
+                                                <a href="
+                                                {% if cca_score %}
+                                                {% url 'pri:applicant_exam_ccat_review' applicant.secure_key_id job_vacancy.id %}
+                                                {% else %}
+                                                #
+                                                {% endif %}                                            
+                                                " data-toggle="tooltip" title="Review Exam">Customer Care Ability Test</a> 
+                                            
+                                        </th>
+                                        {% for item in cca_score %}
+                                        <td>{{ item.date_taken_cca }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_cca }} / {{ item.over_cca }}
+                                            </span></td>
+
+                                        <td>
+                                            {% if item.status_cca == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_cca }}</span>
+                                            {% elif item.status_cca == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_cca }}</span>
+                                            {% elif item.status_cca == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_cca }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_cca == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_cca }}</span>
+                                            {% elif item.ratings_cca == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_cca }}</span>
+                                            {% elif item.ratings_cca == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_cca }}</span>
+                                            {% elif item.ratings_cca == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_cca }}</span>
+                                            {% elif item.ratings_cca == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_cca }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+
+                                        <th class="text-left">
+                                        <a href="
+                                        {% if arp_score %}
+                                        {% url 'pri:applicant_exam_arp_review' applicant.secure_key_id job_vacancy.id %}
+                                        {% else %}
+                                        #
+                                        {% endif %}                                            
+                                        " data-toggle="tooltip" title="Review Exam">Applicant Risk Profiler</a>   
+                                        </th>
+                                        {% for item in arp_score %}
+                                        <td>{{ item.date_taken_arp }}</td>
+                                        <td><span class="badge badge-success">{{ item.score_arp }} / {{ item.over_arp }}
+                                            </span></td>
+
+                                        <td>
+                                            {% if item.status_arp == 'Passed' %}
+                                            <span class="badge badge-success">{{ item.status_arp }}</span>
+                                            {% elif item.status_arp == 'Failed' %}
+                                            <span class="badge badge-danger">{{ item.status_arp }}</span>
+                                            {% elif item.status_arp == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.status_arp }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.ratings_arp == 'Outstanding' %}
+                                            <span class="badge badge-success">{{ item.ratings_arp }}</span>
+                                            {% elif item.ratings_arp == 'Average' %}
+                                            <span class="badge badge-info">{{ item.ratings_arp }}</span>
+                                            {% elif item.ratings_arp == 'Below Average' %}
+                                            <span class="badge badge-warning">{{ item.ratings_arp }}</span>
+                                            {% elif item.ratings_arp == 'Poor' %}
+                                            <span class="badge badge-danger">{{ item.ratings_arp }}</span>
+                                            {% elif item.ratings_arp == 'On progress' %}
+                                            <span class="badge badge-primary">{{ item.ratings_arp }}</span>
+                                            {% endif %}
+                                        </td>
+                                        {% empty %}
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        <td> Not Set </td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                                <tfoot style="border: solid 1px #1E1E1E;">
+                                    <!-- Display total score and compute the passing score -->
+                                    <tr>
+                                        <th scope="col" colspan="2">Total Score (Final Score)</th>
+                                        <th scope="col">
+
+                                            {% if final_score > final_passing_score %}
+                                            <span class="badge badge-success">{{final_score}} / {{final_over}}</span>
+                                            {% else %}
+                                            <span class="badge badge-danger">{{final_score}} / {{final_over}}</span>
+                                            {% endif %}
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin.min.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+fieldset {
+    font-family: Arial, Helvetica, sans-serif;
+    border: 2px solid #ddd;
+    background: rgb(255, 255, 255);
+    border-radius: 5px ;
+    padding: 15px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+fieldset legend {
+    background: #F5F5F5;
+    color: #282122;
+    padding: 5px 10px ;
+    font-size: 32px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 0 0 2px #ddd; 
+}
+
+.container{
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+div.hr {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border: 0;
+  border-top: 1px solid #ddd;
+  height: 0px;
+  line-height: 0px;
+  text-align: center;
+}
+
+.hr-title {
+    background-color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(143, 143, 143) ;
+    font-size: 21px; 
+}
+ 

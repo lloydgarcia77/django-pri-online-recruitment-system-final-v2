@@ -1,0 +1,56 @@
+{% load staticfiles %}
+{% for record in query %}
+<tr>
+    <td class="text-center">{{ record.id }}</td>
+    <td align="center"> <img class="img-profile rounded-circle" src="
+    {% if record.image %}
+    {{ record.image.url }}
+    {% else %}
+    {% static 'images\Administrator Male_48px.png' %}
+    {% endif %}" width="50" height="50">
+    </td>
+
+    <td class="text-center">{{ record.last_name }}, {{ record.middle_name }} {{ record.first_name }}</td>
+    <td class="text-center">{{ record.user.email }}</td>
+    <td class="text-center">{{ record.contact }}</td>
+    <td class="text-center">{{ record.position }}</td>
+    <td class="text-center">{{ record.department }}</td>
+    <td class="text-center">
+        {% if record.level == 'Administrator' %}
+            <span class="badge badge-success">{{ record.level }}</span>
+        {% elif record.level == 'Sub Admin' %}
+            <span class="badge badge-info">{{ record.level }}</span>
+        {% elif record.level == 'Employee' %}
+            <span class="badge badge-warning">{{ record.level }}</span>
+        {% elif record.level == 'Client' %}
+            <span class="badge badge-primary">{{ record.level }}</span>
+        {% elif record.level == 'Applicant' %}
+            <span class="badge badge-danger">{{ record.level }}</span>
+        {% endif %}
+    </td>
+    <td align="center">
+        <div class="d-md-flex align-items-center justify-content-between mb-4">
+            <button type="button" data-url="{% url 'pri:admin_update_profile' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm show-form-edit-admin" data-toggle="tooltip" data-placement="top" title="Edit">
+                <span class="fas fa-pencil-alt fa-sm text-black-50"></span>
+            </button>
+
+            <button type="button" data-url="{% url 'pri:delete_account_admin' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm show-form-delete-admin" data-toggle="tooltip" data-placement="top" title="Delete">
+                <span class="fas fa-trash-alt fa-sm text-white-50"></span>
+            </button>
+
+            <button type="button" data-url="{% url 'pri:admin_user_apply_policy' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm show-user-policy" data-toggle="tooltip" data-placement="top" title="Policy">
+                <span class="fas fa-award  text-white-50"></span>
+
+            </button>
+        </div>
+
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="9" class="text-center bg-warning">No Records!</td>
+</tr>
+{% endfor %}

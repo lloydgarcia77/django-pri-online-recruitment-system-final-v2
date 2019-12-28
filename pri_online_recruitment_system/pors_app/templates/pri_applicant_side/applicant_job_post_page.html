@@ -1,0 +1,95 @@
+{% extends 'pri_applicant_side/applicant_base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+<div class="row">
+
+      <!-- Blog Entries Column -->
+      <div class="col-md-8">
+
+        <h1 class="my-4">Job Posts
+          <small>vacancies</small>
+        </h1>
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
+
+          <li class="page-item {% if current_post == 'all' %} active {% endif %}">
+            <a class="page-link" href="{% url 'applicant_side_job_posts_all' %}">&larr; All Jobs</a>
+          </li>
+          <li class="page-item {% if current_post == 'recommended' %} active {% endif %}">
+            <a class="page-link" href="{% url 'applicant_side_job_posts_recommended' %}">Recommended &rarr;</a>
+          </li>
+
+        </ul>
+
+        <!-- Blog Post -->
+        {% include 'pri_applicant_side/applicant_row_posts.html' %}
+
+      
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-md-4">
+
+        <!-- Search Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Search</h5>
+          <div class="card-body">
+            <form class="" action="{% url 'applicant_side_job_posts_search' %}" method="GET">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for Job Position..." aria-label="Search" name="search_term" value="{{ search_term }}" required>
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="Submit">Go!</button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Categories Widget -->
+        <form method="GET" action="{% url 'applicant_side_job_category_filter' %}"> 
+          <div class="card my-4">
+            <h5 class="card-header">Categories  
+            </h5> 
+          
+            <div class="card-body">
+              <div class="row">
+                
+                <div class="col-lg-6">
+                  <ul class="list-unstyled mb-0">
+                    <li>
+                      <input type="checkbox" name="experience" value="experience" {% if experience %} checked {% endif %}> Experience
+                    </li>
+                    <li>
+                      <input type="checkbox" name="skills" value="skills" {% if skills %} checked {% endif %}> Skills
+                    </li> 
+                  </ul>
+                </div>
+                <div class="col-lg-6">
+                  <ul class="list-unstyled mb-0">
+                    <li>
+                      <input type="checkbox" name="education" value="education" {% if education %} checked {% endif %}> Education
+                    </li> 
+                  </ul>
+                </div>
+                
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-success">Filter</button>
+            </div>
+          </div>
+        </form> 
+        <!-- Side Widget -->
+        <!-- <div class="card my-4">
+          <h5 class="card-header">Side Widget</h5>
+          <div class="card-body">
+            You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+          </div>
+        </div> -->
+
+      </div>
+
+    </div>
+    <!-- /.row -->
+{% endblock body_block %}

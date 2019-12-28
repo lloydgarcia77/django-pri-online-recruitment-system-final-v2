@@ -1,0 +1,28 @@
+{% extends 'pri_admin/pri_admin_applicant_exams/pri_admin_applicant_exam_base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+Test I - Pre-Employment
+{% endblock title %} 
+{% block body %}
+<!-- Main Content -->
+<h1>Test I - Pre-Employment</h1>
+<div class="container">
+    <form id="examForm" method="POST">
+        {% csrf_token %}   
+    
+        <div class="form-group form-check"> 
+            <input 
+            {% if test1Test.allow_retake_t1pe %}
+            checked
+            {% endif %}
+            type="checkbox" class="form-check-input" id="is-retake" name="is-retake">
+            <label class="form-check-label" for="is-retake">Is Exam Retakable?</label>            
+        </div>
+        
+        <button type="submit" id="submit">Save</button>
+    </form>
+</div>
+ 
+{% endblock body %}

@@ -1,0 +1,24 @@
+{% load crispy_forms_tags %} 
+<form class="fire-hired-applicant" method="POST" enctype="multipart/form-data" data-url="{% url 'client_side_fire_hired_applicants' applicant.id %}">
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Fire Applicant ID:<strong> ({{applicant.hired_applicant.id}})</strong></h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+       <p class="lead">Are you sure you want to fire:  <strong>({{applicant.hired_applicant.fname}} {{applicant.hired_applicant.mname}} {{applicant.hired_applicant.lname}}). </strong>?</p>
+
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+
+</form> 

@@ -1,0 +1,70 @@
+{% extends 'pri_client_side/client_base.html' %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="col-md-12">
+
+    <h1 class="my-4">Job
+        <small>Request management</small>
+    </h1>
+</div>
+<div class="divider">
+    <button type="button" data-url="{% url 'client_side_create_request' %}"
+        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm show-client-create-requests">
+        <span class="fas fa-plus fa-sm text-white-50"></span>
+        Create new request
+    </button>
+</div>
+<div class="divider">
+    <div class="table-responsive" id="client-table-requests">
+        <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0"
+            style="font-family: candara; font-size: 15px;">
+            <thead>
+                <tr>
+                    <th style="width: 5%" class="text-center">ID</th>
+                    <th style="width: 30%" class="text-center">Content</th>
+                    <th style="width: 10%" class="text-center">Status</th>
+                    <th style="width: 18%" class="text-center">Date Requested</th>
+                    <th style="width: 12%" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in requests %}
+                <tr>
+                    <td>{{record.id}}</td>
+                    <td>{{record.content}}</td>
+                    <td>
+                        {% if record.status == 'Completed' %}
+                        <span class="badge badge-success">{{ record.status }}</span>
+                        {% elif record.status == 'Started' %}
+                        <span class="badge badge-info">{{ record.status }}</span>
+                        {% elif record.status == 'Deadline' %}
+                        <span class="badge badge-warning">{{ record.status }}</span>
+                        {% elif record.status == 'On Going' %}
+                        <span class="badge badge-primary">{{ record.status }}</span>
+                        {% elif record.status == 'Failed' %}
+                        <span class="badge badge-danger">{{ record.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{record.data_requested}}</td>
+                    <td>
+                        <button type="button" data-url="{% url 'client_side_edit_request' record.id %}"
+                            class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm show-client-edit-requests"
+                            data-toggle="tooltip" data-placement="top" title="Edit">
+                            <span class="fas fa-pencil-alt fa-sm text-black-50"></span>
+                        </button>
+
+                        <button type="button" data-url="{% url 'client_side_delete_request' record.id %}"
+                            class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm show-client-delete-requests"
+                            data-toggle="tooltip" data-placement="top" title="Delete">
+                            <span class="fas fa-trash-alt fa-sm text-white-50"></span>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- /.row -->
+{% endblock body %}

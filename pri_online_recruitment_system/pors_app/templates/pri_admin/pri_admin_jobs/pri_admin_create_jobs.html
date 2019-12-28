@@ -1,0 +1,162 @@
+{% load crispy_forms_tags %}
+<form class="pri-admin-create-jobs" method="POST" enctype="multipart/form-data" data-url="{% url 'pri:create_jobs' record.id %}">
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create new job vacancy client ID:({{record.id}})</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+         <div class="container">
+            {% include 'partials/_messages.html' %}
+        </div>
+        {{ form1|crispy }}
+        <div class="dropdown-divider"></div>
+        <div id="form2_set">
+            {{ form2.management_form }}
+            {% for form in form2.forms %}
+                {{form.non_field_errors}}
+                {{form.errors}}
+
+                <table class='form2_table'>
+                    {{ form|crispy }}
+                </table>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-success" data-dismiss="modal" id="add_field_form2">Add field</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" id="del_field_form2" style="display:none">Remove field</button>
+        <div class="dropdown-divider"></div>
+        <div id="form3_set">
+            {{ form3.management_form }}
+            {% for form in form3.forms %}
+                {{ form.non_field_errors }}
+                {{ form.errors }}
+
+                <table class='form3_table'>
+                     {{ form|crispy }}
+                </table>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-success" data-dismiss="modal" id="add_field_form3">Add field</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"id="del_field_form3" style="display:none">Remove field</button>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+    <!--Empty From-->
+
+    <div id="empty_form_2" style="display:none">
+        <!--hidden-->
+        <table class='form2_table'>
+            {{ form2.empty_form|crispy }}
+        </table>
+    </div>
+    <div id="empty_form_3" style="display:none">
+        <!--hidden-->
+        <table class='form3_table'>
+            {{ form3.empty_form|crispy }}
+        </table>
+    </div>
+</form>
+
+<script>
+$(document).ready(function (){
+    //for the first input fields will ask automatically
+    $('#form2_set div input').attr("required", true)
+    $('#form3_set div input').attr("required", true)
+
+    $('#add_field_form2').click(function(e){
+        e.preventDefault();
+        var form_idx = $('#form2_set #id_form-TOTAL_FORMS').val();
+
+        $('#form2_set').append($('#empty_form_2').html().replace(/__prefix__/g, form_idx));
+        //Add attribute required on the input element
+        $('#form2_set div input').attr("required", true)
+
+        $('#form2_set #id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+        var form_idx_after = $('#form2_set #id_form-TOTAL_FORMS').val();
+        console.log(form_idx_after);
+
+
+        if(form_idx > 0){
+            $('#del_field_form2').show();
+        }else{
+            $('#del_field_form2').hide();
+        }
+        return false;
+    });
+
+     $('#del_field_form2').click(function(e){
+        e.preventDefault();
+        var form_idx = $('#form2_set #id_form-TOTAL_FORMS').val();
+
+        // remove the copied from empty fields
+        $('#form2_set div.form-group').last().remove();
+        // remove the hidden copied table fields as well
+        $('#form2_set table').last().remove();
+
+        //updating the id_form-TOTAL_FORMS value to be sync
+        $('#form2_set #id_form-TOTAL_FORMS').val(parseInt(form_idx)-1);
+        var form_idx_after = $('#form2_set #id_form-TOTAL_FORMS').val();
+        console.log("total:"+form_idx_after);
+
+        //console.log($('#form2_set div.form-group').last().attr('id'));
+
+        if(form_idx_after <= 1){
+            $('#del_field_form2').hide();
+        }
+        return false;
+    });
+
+     $('#add_field_form3').click(function(e){
+        e.preventDefault();
+
+        var form_idx = $('#form3_set #id_form-TOTAL_FORMS').val();
+
+        $('#form3_set').append($('#empty_form_3').html().replace(/__prefix__/g, form_idx));
+         //Add attribute required on the input element
+        $('#form3_set div input').attr("required", true)
+
+        $('#form3_set #id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+        var form_idx_after = $('#form3_set #id_form-TOTAL_FORMS').val();
+        console.log(form_idx_after);
+
+        if(form_idx > 0){
+            $('#del_field_form3').show();
+        }else{
+            $('#del_field_form3').hide();
+        }
+        return false;
+    });
+
+    $('#del_field_form3').click(function(e){
+        e.preventDefault();
+
+        var form_idx = $('#form3_set #id_form-TOTAL_FORMS').val();
+
+        // remove the copied from empty fields
+        $('#form3_set div.form-group').last().remove();
+        // remove the hidden copied table fields as well
+        $('#form3_set table').last().remove();
+
+         //updating the id_form-TOTAL_FORMS value to be sync
+        $('#form3_set #id_form-TOTAL_FORMS').val(parseInt(form_idx)-1);
+        var form_idx_after = $('#form3_set #id_form-TOTAL_FORMS').val();
+        console.log("total:"+form_idx_after);
+
+        //console.log($('#form3_set div.form-group').last().attr('id'));
+
+        if(form_idx_after <= 1){
+            $('#del_field_form3').hide();
+        }
+
+
+        return false;
+    });
+});
+</script>

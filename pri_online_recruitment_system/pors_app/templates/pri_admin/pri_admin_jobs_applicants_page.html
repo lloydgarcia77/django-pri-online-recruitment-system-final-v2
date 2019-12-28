@@ -1,0 +1,54 @@
+{% extends 'pri_admin/pri_admin_index.html' %}
+
+{% block inner_body %}
+<!-- Breadcrumbs-->
+
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{% url 'pri:jobs' %}">Jobs vacancies page</a>
+  </li>
+  <li class="breadcrumb-item active">{{job_vacancies.client_request.requested_client.client_company_name }}</li>
+  <li class="breadcrumb-item active">{{ job_vacancies.job_title }}</li>
+  
+</ol>
+
+<!-- Data Tables -->
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Requesting Applicants</div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center" id="jobRequestApplicantsDataTable" width="100%" cellspacing="0" style="font-family: candara; font-size: 15px">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Picture</th>
+                        <th style="width: 20%;">Name</th>
+                        <th style="width: 5%;">Resume/C.V.</th>
+                        <th style="width: 10%;">Mobile #</th>
+                        <th style="width: 10%;">Email</th>
+                        <th style="width: 5%;">Status</th>
+                        <th style="width: 15%;">Date Applied</th>
+                        <th style="width: 5%;">Exam</th>
+                        <th style="width: 20%;">Interview Date</th> 
+                    </tr>
+                </thead>
+                <tfoot> 
+                </tfoot>
+                <tbody>
+                    {% include 'pri_admin/tables/pri_admin_jobs_applicant_request_table.html' %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+<p class="small text-center text-muted my-5">
+  <em>To God be the Glory</em>
+</p>
+
+{% endblock inner_body %} 

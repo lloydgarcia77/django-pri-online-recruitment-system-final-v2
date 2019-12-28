@@ -1,0 +1,221 @@
+{% load staticfiles %}
+{% load humanize %}
+<!DOCTYPE html>
+
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Job Details</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'specific/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+
+    <script src="{% static 'specific/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'specific/popper.min.js' %}"></script>
+    <script src="{% static 'specific/bootstrap.min.js' %}"></script>
+    <script src="{% static 'specific/jquery.min.js' %}"></script>
+    
+
+
+
+
+</head>
+
+<body>
+    <div class="jumbotron">
+
+
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <div class="row mb-3">
+                    <div class="col-sm-10">
+                        <h1>{{ job_vacancies.client_request.requested_client.client_company_name }}</h1>
+                    </div>
+                    <div class="col-sm-2"><a href="/users" class="pull-right"><img title="profile image"
+                                class="rounded-circle" src="
+                            {% if job_vacancies.client_request.requested_client.client_company_logo %}
+                            {{ job_vacancies.client_request.requested_client.client_company_logo.url }}
+                            {% else %}
+                            {% static 'images\Administrator Male_48px.png' %}
+                            {% endif %}
+                            " width="150" height="150"></a></div>
+                </div>
+                <hr class="my-4">
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <!--left col-->
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item text-muted">Company Details</li>
+                            <li class="list-group-item text-right"><span
+                                    class="float-left"><strong>Location</strong></span>
+                                {{job_vacancies.client_request.requested_client.client_location }}</li>
+                            <li class="list-group-item text-right"><span class="float-left"><strong>Contact
+                                        Person</strong></span>
+                                {{job_vacancies.client_request.requested_client.contact_person }}</li>
+                            <li class="list-group-item text-right"><span class="float-left"><strong>Contact
+                                        #</strong></span>
+                                {{job_vacancies.client_request.requested_client.contact_mobile_no }}</li>
+                        </ul>
+
+
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item text-muted">Request Info <i class="fa fa-dashboard fa-1x"></i>
+                            </li>
+                            <li class="list-group-item text-right"><span
+                                    class="float-left"><strong>Status</strong></span>
+                                <span class="badge badge-warning">{{job_vacancies.client_request.status }}</span></li>
+                            <li class="list-group-item text-right"><span class="float-left"><strong>Date
+                                        requested</strong></span>
+                                <span class="badge badge-danger">{{job_vacancies.client_request.data_requested }}</span>
+                            </li>
+                        </ul>
+
+                        <div class="card mb-3">
+                            <div class="card-header">Request Content</div>
+                            <div class="card-body">{{job_vacancies.client_request.content }}</div>
+                            <!-- <div class="card-footer">Footer</div> -->
+                        </div>
+                    </div>
+                    <!-- border border-secondary rounded -->
+                    <div class="col-sm-9  mb-3">
+                        <div class="container">
+                            <h2>Details</h2>
+                            <br>
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#menu1">Job / Work</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#menu2">Applicants</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+                                <div id="menu1" class="container tab-pane active"><br>
+                                    <h3>Job Vacancy</h3>
+                                    <ul class="list-group mb-3">
+                                        <li class="list-group-item text-muted">Vacancy Info</li>
+                                        <li class="list-group-item text-right"><span
+                                                class="float-left"><strong>Title</strong></span>
+                                            {{job_vacancies.job_title }}</li>
+                                        <li class="list-group-item text-right"><span
+                                                class="float-left"><strong>Category</strong></span>
+                                            {{job_vacancies.job_category }}</li>
+                                        <li class="list-group-item text-right"><span
+                                                class="float-left"><strong>Specialization</strong></span>
+                                            {{job_vacancies.job_specialization }}</li>
+                                        <li class="list-group-item text-right"><span class="float-left"><strong>Minimum
+                                                    Exp</strong></span> {{job_vacancies.job_minimum_experience }}</li>
+                                        <li class="list-group-item text-right"><span
+                                                class="float-left"><strong>Salary</strong></span>
+                                            {{job_vacancies.job_salary|intcomma  }}</li>
+                                        <li class="list-group-item text-right"><span
+                                                class="float-left"><strong>Deadline</strong></span> <span
+                                                class="badge badge-danger">{{job_vacancies.job_deadline }}</span></li>
+
+                                    </ul>
+
+
+                                    <div class="card mb-3">
+                                        <div class="card-header">Company Overview</div>
+                                        <div class="card-body">{{job_vacancies.job_company_overview }}</div>
+                                        <!-- <div class="card-footer">Footer</div> -->
+                                    </div>
+
+                                    <div class="card mb-3">
+                                        <div class="card-header">Description</div>
+                                        <div class="card-body">{{job_vacancies.job_description }}</div>
+                                        <!-- <div class="card-footer">Footer</div> -->
+                                    </div>
+
+                                    <div class="card mb-3">
+                                        <div class="card-header">Qualifications</div>
+                                        <div class="card-body">
+                                            <ul>
+                                                {% for qualifications in job_vacancies.job_vacancy_jq_fk.all %}
+                                                <li>{{ qualifications.job_qualifications }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <!-- <div class="card-footer">Footer</div> -->
+                                    </div>
+
+                                    <div class="card mb-3">
+                                        <div class="card-header">Resposibilities</div>
+                                        <div class="card-body">
+                                            <ul>
+                                                {% for resposibilities in job_vacancies.job_vacancy_jr_fk.all %}
+                                                <li>{{ resposibilities.job_responsibilities }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <!-- <div class="card-footer">Footer</div> -->
+                                    </div>
+                                </div>
+                                <div id="menu2" class="container tab-pane fade"><br>
+                                    <h3>Recommended (by matching)</h3>
+                                    <table class="table table-bordered table-hover text-center" id="galeApplicantTable"
+                                        width="100%" cellspacing="0" style="font-family: candara; font-size: 15px">
+                                        <thead>
+                                            <tr>
+                                                <th>Matching Rank </th>
+                                                <th>Picture</th>
+                                                <th>Name</th>
+                                                <th>Contact #</th>
+                                                <th>Email </th>
+                                                <th>Attachment </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="items">
+                                            {% for applicant in applicants %}
+                                            <tr>
+                                                <td style="font-size: 25px"><span class="badge badge-primary">{{ applicant.7 }}</span></td>
+                                                <td><img class="img-profile rounded-circle" src="{{ applicant.1 }}"
+                                                        width="50" height="50"></td>
+                                                <td><a href="{% url 'pri:applicant_profile_viewer' applicant.0 applicant.6 %}" data-toggle="tooltip" title="View Applicant Profile">{{ applicant.2 }}</a></td>
+                                                <td>{{ applicant.5 }}</td>
+                                                <td>{{ applicant.4 }}</td>
+                                                <td>
+                                                    {% if applicant.3 != 'No File' %}
+                                                    <a href="{{ applicant.3 }}" download>
+                                                        <span title="Download Curriculum Vitae"
+                                                            class="fas fa-file-download fa-2x"></span>
+                                                    </a>  
+                                                    {% endif %}
+                                                </td>
+
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery-3.4.1.js' %}"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.js' %}"></script>
+    <script src="{% static 'js/admin_job_details.js' %}"></script>
+</body>
+
+</html>

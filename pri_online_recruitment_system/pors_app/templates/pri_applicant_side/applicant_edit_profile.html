@@ -1,0 +1,609 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/applicant2.css' %}">
+
+    <!--For time picker must be declare here below-->
+    <link rel="stylesheet" href="{% static 'css/gijgo.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/gijgo.css'%}">
+    <!--For loading-->
+    <link rel="stylesheet" href="{% static 'css/loading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loading-btn.css' %}">
+</head>
+
+<body>
+        <div class="container">
+
+                <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- progress bar -->
+                        <!-- <ul id="progressbar">
+                                <li class="active">
+                                        Account Setup
+                                </li>
+                                <li>Social Profiles</li>
+                                <li>Personal Details</li>
+                        </ul> -->
+                        <!-- Applicant Form -->
+                        <fieldset>
+                                <legend>Personal Information</legend>
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.image|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.cv|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.erp_question|as_crispy_field }}
+                                        </div>
+                                </div> 
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.fname|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.mname|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.lname|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.mobile_no|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.telephone_no|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.gender|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="hr">
+                                        <span class="hr-title">Present Address</span>
+                                </div>
+                                <!-- Present Address -->
+                                <div class="form-row">
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.bldg_name_0|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.brgy_sub_0|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.dis_mun_0|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.cit_pro_0|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="hr">
+                                        <span class="hr-title">Permanent Address</span>
+                                </div>
+
+                                <!-- Permanent Address -->
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.bldg_name_1|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.brgy_sub_1|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.dis_mun_1|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantProfile.cit_pro_1|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <!-- Body Measurement -->
+
+                                <div class="hr">
+                                        <span class="hr-title">Body Measurement</span>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.weight|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.height|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.shirt_size|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.shoe_size|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.waistline|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.length_of_pants|as_crispy_field }}
+                                        </div>
+                                </div>
+
+
+                                <!-- End of personal form set -->
+                        </fieldset>
+
+                        <fieldset>
+                                <legend>Government ID's</legend>
+                                <!-- Government ID -->
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantProfile.sss|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantProfile.ctc|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.philhealth|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.tin|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.pagibig|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                        </fieldset>
+
+                        <fieldset>
+                                <legend>Family Details</legend>
+                                <!-- If married, fill this up! -->
+
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.civil_status|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.spouse_full_name|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.spouse_contact_number|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <!-- Father details -->
+                                <div class="hr">
+                                        <span class="hr-title">Father Details</span>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.father_full_name|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.father_occupation|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.father_home_address|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="hr">
+                                        <span class="hr-title">Mother Details</span>
+                                </div>
+                                <!-- Mother Details -->
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.mother_full_name|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.mother_occupation|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.mother_home_address|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <!-- Applicant Siblings -->
+
+                                <div class="hr">
+                                        <span class="hr-title">Siblings Details</span>
+                                </div>
+                                <div id="form-applicant-siblings-set">
+                                        <div id="form-applicant-siblings">
+                                                {{ formApplicantSiblings.management_form }}
+                                                {% for form in formApplicantSiblings.forms %}                                        
+                                                {{ form.non_field_errors }}
+                                                {{ form.errors }}
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.name|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.age|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.occ|as_crispy_field }}                                                            
+                                                        </div>                                                      
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12 mb-0">
+                                                        <!-- Link: https://docs.djangoproject.com/en/2.2/topics/forms/formsets/ -->
+                                                        <!-- Accessing Can delete field in formset -->
+                                                        {% if formApplicantSiblings.can_delete %}
+                                                        {{ form.DELETE|as_crispy_field }}
+                                                        {% endif %}
+                                                        <!-- For ID is Reuired Error -->
+                                                        <!-- https://stackoverflow.com/questions/49026157/django-formset-not-validating-because-id-is-required -->
+                                                        <!-- #https://docs.djangoproject.com/es/2.1/topics/forms/#looping-over-hidden-and-visible-fields -->
+                                                        <!-- Render first each form in the form inlinefactory -->
+                                                        {% for form in formApplicantSiblings.forms %}
+                                                            {% for hidden in form.hidden_fields %}
+                                                                {{ hidden }}
+                                                            {% endfor %}
+                                                            <!-- form.visible fields go here -->
+                                                        {% endfor %}
+                                                    </div>
+                                                </div> 
+                                                {% endfor %}
+                                               
+                                        </div>                                                                             
+                                        <hr>
+                                        <button type="button" class="btn btn-success" data-dismiss="modal" id="add-field-form-applicant-siblings">Add field</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="del-field-form-applicant-siblings" style="display:none;">Remove field</button>
+                                        <!-- Empty form Applicant siblings-->
+                                        <div id="empty-form-applicant-siblings-set" style="display: none;">
+                                                <!-- Hidden -->                                         
+                                                {{ formApplicantSiblings.empty_form|crispy }}
+
+                                        </div>
+                                </div>                                
+                                <!-- End of Applicant Siblings -->
+                                <div class="hr">
+                                        <span class="hr-title">Emergency Contact Details</span>
+                                </div>
+                                <!-- Applicant contact person incase of emergency -->
+                                <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.contact_person|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.relationship|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                                {{ formApplicantProfile.contact_person_mobile_no|as_crispy_field }}
+                                        </div>
+                                </div>
+                        </fieldset>
+                        <!-- Applicant Employment History -->
+                        <fieldset>
+                                <legend>Employement History</legend>
+
+                                <div id="form-applicant-employement-history-set">
+                                        <div id="form-applicant-employement-history">
+                                                {{ formApplicantEmploymentHistory.management_form }}
+                                                {% for form in formApplicantEmploymentHistory.forms%}
+                                              
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.company|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.date_from|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.date_to|as_crispy_field }}
+                                                        </div>
+                                                </div> 
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.position|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.reason_for_leaving|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.basic_salary_pay|as_crispy_field }}
+                                                        </div>
+                                                </div>
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <!-- Link: https://docs.djangoproject.com/en/2.2/topics/forms/formsets/ -->
+                                                            <!-- Accessing Can delete field in formset -->
+                                                            {% if formApplicantEmploymentHistory.can_delete %}
+                                                            {{ form.DELETE|as_crispy_field }}
+                                                            {% endif %} 
+                                                            {% for form in formApplicantEmploymentHistory.forms %}
+                                                                {% for hidden in form.hidden_fields %}
+                                                                        {{hidden}}
+                                                                {% endfor %}
+                                                            {% endfor %}                                                           
+                                                        </div>
+                                                </div> 
+                                                {% endfor %}                                                    
+                                                                          
+                                        </div>
+                                </div>                                
+                                <hr>
+                                <button type="button" class="btn btn-success" data-dismiss="modal" id="add-field-form-applicant-employment-history">Add field</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" id="del-field-form-applicant-employment-history" style="display:none;">Remove field</button>
+
+                                <!-- Empty Form Applicant Employment History -->
+                                <div id="empty-form-applicant-employement-history-set" style="display: none;">
+                                        {{ formApplicantEmploymentHistory.empty_form|crispy }}
+                                </div>
+                        </fieldset>
+                        <!-- Applicant Educational Attainment -->
+                        <fieldset>
+                                <legend>Educational Attainment</legend>
+                                <div class="hr">
+                                        <span class="hr-title">College</span>
+                                </div>
+                                <!-- College -->
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.college|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.college_course|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.college_address|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.csya_from|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.csya_to|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="hr">
+                                        <span class="hr-title">Vocational</span>
+                                </div>
+                                <!-- Vocational -->
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.vocational|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.vocational_course|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.vocational_address|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.vsya_from|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.vsya_to|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="hr">
+                                        <span class="hr-title">Highschool</span>
+                                </div>
+                                <!-- Highschool -->
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.highschool|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.hsya_from|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.hsya_to|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-12 mb-0">
+                                                {{ formApplicantEducationalAttainment.highschool_address|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="hr">
+                                        <span class="hr-title">Elementary</span>
+                                </div>
+                                <!-- Elementary -->
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.elementary|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.esya_from|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                                {{ formApplicantEducationalAttainment.esya_to|as_crispy_field }}
+                                        </div>
+                                </div>
+
+                                <div class="form-row">
+                                        <div class="form-group col-md-12 mb-0">
+                                                {{ formApplicantEducationalAttainment.elementary_address|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="hr">
+                                        <span class="hr-title">Skills/Abilities</span>
+                                </div>
+                                <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.special_skills|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                                {{ formApplicantEducationalAttainment.language_speak|as_crispy_field }}
+                                        </div>
+                                </div>
+                        </fieldset>
+
+                        <fieldset>
+                                <legend>Trainings/Seminars/Workshop Attended</legend>
+                                <!-- Applicant Trainings -->
+                                <div id="form-applicant-trainings-set">
+                                        <div id="form-applicant-trainings">
+                                                {{ formApplicantTrainings.management_form }}
+                                                {% for form in formApplicantTrainings.forms%}
+                                                {{ form.none_field_errors}}
+                                                {{ form.errors }}
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-8 mb-0">
+                                                                {{ form.title|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.date_attended|as_crispy_field }}
+                                                        </div>
+                                                </div>
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <!-- Link: https://docs.djangoproject.com/en/2.2/topics/forms/formsets/ -->
+                                                            <!-- Accessing Can delete field in formset -->
+                                                            {% if formApplicantTrainings.can_delete %}
+                                                            {{ form.DELETE|as_crispy_field }}
+                                                            {% endif %}
+                                                            {% for form in formApplicantTrainings.forms %}
+                                                                {% for hidden in form.hidden_fields %}
+                                                                        {{ hidden }}
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        </div>
+                                                </div> 
+                                                {% endfor %}                                                
+                                        </div>
+                                </div>  
+                                <hr>                    
+                                <button type="button" class="btn btn-success" data-dismiss="modal" id="add-field-form-applicant-trainings">Add field</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" id="del-field-form-applicant-trainings" style="display:none;">Remove field</button>
+
+                                <!--  Empty form applicant trainings -->
+                                <div id="empty-form-applicant-trainings-set" style="display: none;">
+                                        {{ formApplicantTrainings.empty_form|crispy }}
+                                </div>
+                        </fieldset>
+
+                        <fieldset>
+                                <legend>Character References</legend>
+                                <!-- Applicant Character References -->
+                                <div id="form-applicant-character-reference-set">
+                                        <div id="form-applicant-character-reference">
+                                                {{ formApplicantCharacterReference.management_form }}
+                                                {% for form in formApplicantCharacterReference.forms %}
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.full_name|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.occupation|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                                {{ form.contact_no|as_crispy_field }}
+                                                        </div>
+                                                </div>
+                                                <div class="form-row">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <!-- Link: https://docs.djangoproject.com/en/2.2/topics/forms/formsets/ -->
+                                                            <!-- Accessing Can delete field in formset -->
+                                                            {% if formApplicantCharacterReference.can_delete %}
+                                                            {{ form.DELETE|as_crispy_field }}
+                                                            {% endif %}
+                                                            {% for form in formApplicantCharacterReference.forms %}
+                                                                {% for hidden in form.hidden_fields %}
+                                                                {{ hidden }}
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        </div>
+                                                </div> 
+                                                {% endfor %}                                            
+                                        </div>
+                                </div>    
+                                <hr>
+                                <button type="button" class="btn btn-success" data-dismiss="modal" id="add-field-form-applicant-character-reference">Add field</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" id="del-field-form-applicant-character-reference" style="display:none;">Remove field</button>
+                                <!-- Empty Form Application Reference -->
+                                <div id="empty-form-applicant-character-reference-set" style="display: none;">
+                                        {{ formApplicantCharacterReference.empty_form|crispy }}
+                                </div> 
+                        </fieldset>
+                        <fieldset>
+                                <legend>Survery Questions</legend>
+                                <!-- Question must be in the last -->
+                                <div class="form-row">
+                                        <div class="form-group col-md-12 mb-0">
+                                                {{ formApplicantProfile.question1|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="form-row">
+                                        <div class="form-group col-md-12 mb-0">
+                                                {{ formApplicantProfile.question2|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="form-row">
+                                        <div class="form-group col-md-12 mb-0">
+                                                {{ formApplicantProfile.question3|as_crispy_field }}
+                                        </div>
+                                </div>
+                                <div class="form-row">
+                                        <div class="form-group col-md-12 mb-0">
+                                                {{ formApplicantProfile.question4|as_crispy_field }}
+                                        </div>
+                                </div>
+                        </fieldset>
+
+                        <button type="submit" class="btn btn-primary" style="margin: 0 auto; display:block;">Submit</button>
+
+                </form>
+        </div>
+ 
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/applicant_edit.js' %}" async defer></script>
+
+    <!--For time picker must be declare here below-->
+    <script src="{% static '/js/gijgo.js' %}" type="text/javascript"></script>
+    <script src="{% static '/js/gijgo.min.js' %}" type="text/javascript"></script>
+
+    <script src="{% static '/js/jquery.steps.js' %}" type="text/javascript"></script>
+    <script src="{% static '/js/jquery.steps.min.js' %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+            $("#id_spouse_contact_number").removeAttr('required');
+    </script>
+</body>
+
+</html>

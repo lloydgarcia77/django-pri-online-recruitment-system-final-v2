@@ -1,0 +1,34 @@
+{% for applicant_request in job_requests %}
+<tr>
+    <td>{{ applicant_request.job_vacancy_applied.client_request.requested_client.client_company_name }}</td>
+    <td>{{ applicant_request.job_vacancy_applied.job_title }}</td>
+    <td>{{ applicant_request.applying_applicant.lname }}, {{ applicant_request.applying_applicant.fname }} {{ applicant_request.applying_applicant.mname }}.</td>
+    <td><span class="badge badge-danger">On going</span></td>
+    <td>{{applicant_request.date_applied}}</td>
+    <td>
+        <span class="badge badge-info">{{applicant_request.take_exam}} </span>
+    
+        <button type="button" data-url="{% url 'pri:toggle_exams' applicant_request.id %}"
+            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm toogle-applicant-exam"
+            data-toggle="tooltip" data-placement="top" title="Enable to take the exam">
+            {% if applicant_request.take_exam %}
+            <i class="fas fa-toggle-off "></i>
+            {% else %}
+            <i class="fas fa-toggle-on "></i>
+            {% endif %}            
+        </button>
+    </td>
+    <td>{{applicant_request.interview_date}}
+ 
+        <button type="button" data-url=""
+        class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm set-interview-schedule"
+        data-toggle="tooltip" data-placement="top" title="Delete Applicant">
+        <span class="fas fa-trash-alt"></span>
+    </button>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="7" class="text-center bg-warning">No Records!</td>
+</tr>
+{% endfor %}

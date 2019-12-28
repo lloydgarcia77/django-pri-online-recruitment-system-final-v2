@@ -1,0 +1,23 @@
+{% extends 'registration/registration_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+<div class="container">
+    <div class="card card-login mx-auto mt-5 registration-form-background">
+        <div class="card-header text-white">Create Account</div>
+        <div class="card-body">
+            <div class="text-center mb-4 text-white">
+                <h4>Create new account!</h4>
+                <p>Create account and apply now!</p>
+            </div>
+            <form method="POST">
+                <div class="form-group text-white">
+                    {% csrf_token %}
+                    {{ form|crispy }} 
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock body_block %}

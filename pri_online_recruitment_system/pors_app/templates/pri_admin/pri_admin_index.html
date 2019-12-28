@@ -1,0 +1,428 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+PRI Online Hiring Job
+{% endblock title%}
+
+{% block body_block %}
+
+<nav class="navbar navbar-expand navbar-dark custom-color-header static-top">
+    <a class="navbar-brand" href="#">
+        <img class="rounded-circle" src="{% static 'images\pri_logo.jpg' %}" alt="" height="42" width="42">
+    </a>
+    <a class="navbar-brand mr-1" href="{% url 'admin:index' %}">PRI Administrator</a>
+
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Navbar Search -->
+    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+
+    </form>
+
+
+    {% if request.user.is_authenticated and request.user.is_staff and request.user.is_active %}
+    {% if user %}
+    {% for u in user %}
+    <!-- Navbar -->
+    <ul class="navbar-nav ml-auto ml-md-0">
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-white small">{{ u.username }}</span>
+                <img class="img-profile rounded-circle"
+                     src="
+                 {% if profile.image %}
+                    {{ profile.image.url}}
+                 {% else %}
+                    {% static 'images/Administrator Male_48px.png' %}
+                 {% endif %}
+                "
+                     height="42" width="42">
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                <!-- <a class="dropdown-item" href="{% url 'export_users_csv' %}">CSV</a>
+                <a class="dropdown-item" href="{% url 'export_users_xls' %}">XLS</a>
+                <a class="dropdown-item" href="{% url 'export_users_xlsx' %}">XLSX</a> -->
+                <a class="dropdown-item" href="{% url 'password_change' %}">Update Password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+            </div>
+        </li>
+    </ul>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+
+
+</nav>
+
+<div id="wrapper">
+
+
+    <ul class="sidebar navbar-nav custom-color">
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'pri:dashboard' %}">
+                <i class="fas fa-fw fa-tachometer-alt text-white"></i>
+                <span class="custom-text-color">Dashboard</span>
+            </a>
+        </li>
+
+        {% if profile.level == 'Administrator' %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'pri:admin' %}">
+                <i class="fas fa-user-tie custom-text-color"></i>
+                <span class="custom-text-color">Admin</span> 
+            </a>
+        </li>
+        {% endif %}    
+      
+
+        <!--DROP DOWN CLIENTS-->
+
+        <li class="nav-item dropdown ">
+            <a class="nav-link dropdown-toggle" href="#" id="pagesDropdownClients" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="fas far fa-building custom-text-color"></i>
+                <span class="custom-text-color">Clients Side</span>
+            </a>
+            <div class="dropdown-menu " aria-labelledby="pagesDropdown">
+                <h6 class="dropdown-header">Details:</h6> 
+                {% if policy.pri_can_view_clients_page %}
+                <a class="dropdown-item" href="{% url 'pri:client' %}">
+                    <i class="fas far fa-building"></i>
+                    <span>Clients</span>
+                </a>
+                {% endif %}                              
+
+                <!-- <a class="dropdown-item" href="{% url 'pri:schedules' %}">
+                    <i class="fa fa-calendar"></i>
+                    <span>Schedules/Exam</span>
+                </a> -->
+                {% if policy.pri_can_view_request_page %}
+                <a class="dropdown-item" href="{% url 'pri:requests' %}">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Requests</span>
+                </a>
+                {% endif %} 
+
+                 <!-- <a class="dropdown-item" href="{% url 'pri:hired' %}">
+                    <i class="fas fa-user-check"></i>
+                    <span>Hired</span>
+                </a> -->
+                {% if policy.pri_can_view_job_vacancy_page %}
+                 <a class="dropdown-item" href="{% url 'pri:jobs' %}">
+                    <i class="fas fa-business-time"></i>
+                    <span>Jobs / Vacancies</span>
+                </a>
+                {% endif %} 
+            </div>
+        </li>
+
+        <!--DROP APPLICANTS-->
+
+         <li class="nav-item dropdown ">
+            <a class="nav-link dropdown-toggle" href="#" id="pagesDropdownApplicants" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-users custom-text-color"></i>
+                <span class="custom-text-color">Applicant Side</span>
+            </a>
+            <div class="dropdown-menu " aria-labelledby="pagesDropdown">
+                <h6 class="dropdown-header">Details:</h6>
+                {% if policy.pri_can_view_applicants_page %}
+                <a class="dropdown-item" href="{% url 'pri:applicants' %}">
+                    <i class="fas fa-users"></i>
+                    <span>Applicants</span>
+                </a>
+                {% endif %} 
+<!-- 
+                <a class="dropdown-item" href="{% url 'pri:application_form' %}">
+                    <i class="fa fa-address-card"></i>
+                    <span>Application Form</span>
+                </a> -->
+<!-- 
+                <a class="dropdown-item" href="{% url 'pri:examination' %}">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Examination</span>
+                </a> -->
+
+            </div>
+        </li>
+
+
+    </ul>
+
+    <div id="content-wrapper">
+
+        <div class="container-fluid">
+            {% if request.user.is_authenticated and request.user.is_staff and request.user.is_active %}
+            {% if user %}
+            {% block inner_body %}
+
+            <!--content of that page-->
+            <!-- Icon Cards-->
+            <div class="row">
+                {% if profile.level == 'Administrator' %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-danger o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="mr-5">{{no_of_users}} Current Users!</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'pri:admin' %}">
+                            <span class="float-left">View Details</span>
+                            <span class="float-right">
+                                <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'export_report_xlsx_users' %}">
+                            <span class="float-left">Download Xlxs Report</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %} 
+                {% if policy.pri_can_view_clients_page %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-warning o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas far fa-building"></i>
+                            </div>
+                            <div class="mr-5">{{no_of_clients}} Clients!</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'pri:client' %}">
+                            <span class="float-left">View Details</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                                </span>
+                        </a>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'export_report_xlsx_clients' %}">
+                            <span class="float-left">Download Xlxs Report</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if policy.pri_can_view_clients_page %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-success o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="mr-5">{{no_of_hired_applicants}} Hired Applicants!</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'pri:client' %}">
+                            <span class="float-left">View Details</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                                </span>
+                        </a>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'export_report_xlsx_hired_applicants' %}">
+                            <span class="float-left">Download Xlxs Report</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if policy.pri_can_view_request_page %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white custom-bg-violet o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <div class="mr-5">{{no_of_request}} Client Request!</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'pri:requests' %}">
+                            <span class="float-left">View Details</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                                </span>
+                        </a>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'export_report_xlsx_client_requests' %}">
+                            <span class="float-left">Download Xlxs Report</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <!-- Icon Cards-->
+            <div class="row">
+                {% if policy.pri_can_view_job_vacancy_page %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-primary o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-business-time"></i>
+                            </div>
+                            <div class="mr-5">{{no_of_job_vacancy}} Job Vacancies!</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'pri:jobs' %}">
+                            <span class="float-left">View Details</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                                </span>
+                        </a>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'export_report_xlsx_job_vacancy' %}">
+                            <span class="float-left">Download Xlxs Report</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if policy.pri_can_view_job_vacancy_page %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-info o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fa fa-address-card"></i>
+                            </div>
+                            <div class="mr-5">{{no_of_applying_applicants}} Applying Applicants!</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'pri:jobs' %}">
+                            <span class="float-left">View Details</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                                </span>
+                        </a>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'export_report_xlsx_applying_applicants' %}">
+                            <span class="float-left">Download Xlxs Report</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                {% endif %}
+
+                {% if policy.pri_can_view_applicants_page %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white custom-bg-orange o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="mr-5">{{no_of_applicants}} Applicants!</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'pri:applicants' %}">
+                            <span class="float-left">View Details</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                                </span>
+                        </a>
+                        <a class="card-footer text-white clearfix small z-1" href="{% url 'export_report_xlsx_applicants' %}">
+                            <span class="float-left">Download Xlxs Report</span>
+                            <span class="float-right">
+                                  <i class="fas fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                    
+                </div>
+                {% endif %}
+
+                
+ 
+ 
+            </div>
+ 
+            <div class="dropdown-divider"></div>
+            <div class="row">
+               <div class="col-xl-3 col-sm-6 mb-3">
+                    
+                </div>
+            </div>
+
+            
+
+            {% endblock inner_body %}
+            {% endif %}
+            {% endif %}
+
+        </div><!-- /.container-fluid -->
+
+
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright © PRI Online Recruitment System Website 2019</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-form-normal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+{% endblock body_block %}

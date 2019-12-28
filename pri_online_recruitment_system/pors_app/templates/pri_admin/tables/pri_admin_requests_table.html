@@ -1,0 +1,73 @@
+{% load staticfiles %}
+
+
+{% for record in query %}
+<tr
+    {% if not record.seen_by_admin %}
+        style="font-weight:bold;"
+    {% endif %}
+>
+
+    <td class="text-center">{{ record.id }}</td>
+    <td class="text-center">{{ record.requested_client }}</td>
+    <td class="text-center" >
+          {{ record.content }}
+    </td>
+    <td class="text-center">
+        {% if record.status == 'Completed' %}
+            <span class="badge badge-success">{{ record.status }}</span>
+        {% elif record.status == 'Started' %}
+            <span class="badge badge-info">{{ record.status }}</span>
+        {% elif record.status == 'Deadline' %}
+            <span class="badge badge-warning">{{ record.status }}</span>
+        {% elif record.status == 'On Going' %}
+            <span class="badge badge-primary">{{ record.status }}</span>
+        {% elif record.status == 'Failed' %}
+            <span class="badge badge-danger">{{ record.status }}</span>
+        {% endif %}
+    </td>
+    <td class="text-center">
+        {% if not record.seen_by_admin %}
+            <span class="badge badge-danger">New!</span>
+        {% endif %}
+        {{ record.data_requested }}
+    </td>
+    <td align="center">
+        <div class="d-md-flex align-items-center justify-content-between mb-4">
+            {% if policy.pri_can_edit_request %}
+            <button type="button" data-url="{% url 'pri:edit_requests' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm show-form-edit-requests" data-toggle="tooltip" data-placement="top" title="Edit">
+                <span class="fas fa-pencil-alt fa-sm text-black-50"></span>
+            </button>
+            {% endif %}
+
+            {% if policy.pri_can_delete_request %}
+            <button type="button" data-url="{% url 'pri:delete_requests' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm show-form-delete-requests" data-toggle="tooltip" data-placement="top" title="Delete">
+                <span class="fas fa-trash-alt fa-sm text-white-50"></span>
+            </button>
+            {% endif %}
+
+            {% if policy.pri_can_view_request %}
+            <button type="button" data-url="{% url 'pri:view_requests' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm show-form-view-requests" data-toggle="tooltip" data-placement="top" title="View">
+                <span class="fas fa-eye fa-sm text-white-50"></span>
+            </button>
+            {% endif %}
+
+            {% if policy.pri_can_create_job_request %}
+           <button type="button" data-url="{% url 'pri:create_jobs' record.id %}"
+                    class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm show-form-create-job-vacancy-requests" data-toggle="tooltip" data-placement="top" title="Create Job Vacancy">
+                <span class="fas fa-briefcase fa-sm text-white-50"></span>
+            </button>
+            {% endif %}
+
+        </div>
+
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="9" class="text-center bg-warning">No Records!</td>
+</tr>
+{% endfor %}

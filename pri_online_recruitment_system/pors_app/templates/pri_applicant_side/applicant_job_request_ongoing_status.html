@@ -1,0 +1,53 @@
+{% load crispy_forms_tags %}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Applicant Status</h5>
+    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <h5 class="text-center">Job request history</h5>
+    <table class="table table-striped" id="tblGrid">
+        <thead id="tblHead">
+            <tr>
+                <th style="width: 20%;" class="text-center">Company</th>
+                <th style="width: 20%;" class="text-center">Job Title</th>
+                <!-- <th style="width: 10%;" class="text-center">Status</th> -->
+                <th style="width: 25%;" class="text-center">Date Applied</th>
+                <th style="width: 5%;" class="text-center">Examinations</th>
+                <th style="width: 20%;" class="text-center">Interview Date</th>  
+                <th style="width: 10%;" class="text-center">Cancel Request</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in job_request %}
+            <tr>
+                <td class="text-center">{{ job.job_vacancy_applied.client_request.requested_client.client_company_name }}</td>
+                <td class="text-center">{{ job.job_vacancy_applied.job_title }}</td>
+                <!-- <td class="text-center"><span class="badge badge-danger">On going</span></td> -->
+                <td class="text-center">{{ job.date_applied }}</td>
+                <td class="text-center">
+                    <button
+                    {% if not job.take_exam %} disabled {% endif %} type="button" onclick="window.location.href = '{% url 'pri:applicant_exam_list' profile.secure_key_id job.id %}';"
+                        class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm show-exam-page"
+                        data-toggle="tooltip" data-placement="top" title="Take Exam">
+                        <span class="fas fa-clipboard-list"></span>
+                    </button>
+                </td>
+                <td class="text-center">{{ job.interview_date }}</td>  
+                <td class="text-center"><input type="checkbox" name="checkbox" value="{{job.id}}" class="mycheckbox"></td>  
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center bg-warning">No Records!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" id="btnCancelRequests" disabled data-url="{% url 'applicant_side_job_request_cancel' %}">Cancel Selected</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

@@ -1,0 +1,24 @@
+{% load crispy_forms_tags %}
+<form class="delete-profile-form" method="POST" enctype="multipart/form-data" data-url="{% url 'pri:delete_account_admin' profile.id %}">
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Deleting Account ID/Level:<strong> ({{ profile.id }}/{{ profile.level}})</strong></h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+       <p class="lead">Are you sure you want to delete:  <strong>( Name: {{profile.last_name}}, {{profile.first_name}} {{profile.middle_name}} ). </strong>?</p>
+        <p class="lead"><strong>Note:</strong> All the records and accounts of (<strong>{{ user.username}}, {{ user.email }}</strong>) will be deleted permanently!</p>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+
+</form>
