@@ -514,7 +514,7 @@ class PRIApplicantTestCCATInfo(models.Model):
     question16 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="When it comes to doing something for the first time. I let others try it first before I take the initial risk.")
     question17 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="There are usually limits as to how far one can go.")
     question18 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="My coworkers would descrbe me as being more assertive than most.")
-    question19 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="The oppurtunities that come with leading the way outweigh the risk one has to take in the process.")
+    question19 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="The opportunities that come with leading the way outweigh the risk one has to take in the process.")
     question20 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="'Bouncing back' from defeat is easier said than done.")
     question21 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="Employees should not expect all employees to be hard-working and dependable.")
     question22 = models.CharField(max_length = 250, choices=CHOICE_LIST, default=CHOICE_LIST[0], verbose_name="My coworkers would describe me as steady rather impulsive.")
